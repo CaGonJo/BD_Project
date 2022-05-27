@@ -1,9 +1,12 @@
 <mxfile host="65bd71144e">
     <diagram id="00-uPUe9AZms_T46HA7c" name="Exposição Gulbenkian">
-        <mxGraphModel dx="1656" dy="1714" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1584" dy="1675" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
+                <mxCell id="180" value="" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="306" y="243" width="80" height="80" as="geometry"/>
+                </mxCell>
                 <mxCell id="2" value="IVM" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="123" y="41.099999999999994" width="120" height="60" as="geometry"/>
                 </mxCell>
@@ -319,15 +322,21 @@
                         <mxPoint x="330" y="350" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="97" value="" style="endArrow=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="2" target="181" edge="1">
+                <mxCell id="96" value="contém&lt;br&gt;" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="314" y="253" width="66" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="97" value="" style="endArrow=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="2" target="180" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="350" y="320" as="sourcePoint"/>
-                        <mxPoint x="347" y="254" as="targetPoint"/>
+                        <mxPoint x="330" y="210" as="targetPoint"/>
                         <Array as="points">
                             <mxPoint x="347" y="71"/>
                             <mxPoint x="347" y="151"/>
                         </Array>
                     </mxGeometry>
+                </mxCell>
+                <mxCell id="99" value="&amp;lt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=-90;" parent="1" vertex="1">
+                    <mxGeometry x="331" y="284" width="30" height="20" as="geometry"/>
                 </mxCell>
                 <mxCell id="102" value="&amp;lt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=-90;" parent="1" vertex="1">
                     <mxGeometry x="173" y="440" width="30" height="20" as="geometry"/>
@@ -467,65 +476,56 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="165" value="&lt;font color=&quot;#ffffff&quot;&gt;(RI-1)&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                <mxCell id="165" value="&lt;font color=&quot;#000000&quot;&gt;(RI-1)&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="490" y="-105" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="167" value="(RI-1):&amp;nbsp; O nº de unidades repostas no evento de reposição tem de respeitar o número definido no planograma" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                <mxCell id="167" value="&lt;font color=&quot;#000000&quot;&gt;(RI-1):&amp;nbsp; O nº de unidades repostas no evento de reposição tem de respeitar o número definido no planograma&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry y="820" width="370" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="168" value="(RI-2)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                <mxCell id="168" value="&lt;font color=&quot;#000000&quot;&gt;(RI-2)&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry x="238" y="450" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="169" value="(RI-2): Cada categoria está associada a um tipo de prateleira, não a uma prateleira específica" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                <mxCell id="169" value="&lt;font color=&quot;#000000&quot;&gt;(RI-2): Cada categoria está associada a um tipo de prateleira, não a uma prateleira específica&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry y="880" width="350" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="170" value="(RI-3)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                <mxCell id="170" value="&lt;font color=&quot;#000000&quot;&gt;(RI-3)&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry x="20" y="314" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="171" value="(RI-3): O nome de cada retalhista e único" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                <mxCell id="171" value="&lt;font color=&quot;#000000&quot;&gt;(RI-3): O nome de cada retalhista e único&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry x="-40" y="920" width="330" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="172" value="(RI-4)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                <mxCell id="172" value="&lt;font color=&quot;#000000&quot;&gt;(RI-4)&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry x="500" y="740" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="173" value="(RI-4): O código EAN tem de ter 13 dígitos" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                <mxCell id="173" value="&lt;font color=&quot;#000000&quot;&gt;(RI-4): O código EAN tem de ter 13 dígitos&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry x="8" y="960" width="240" height="10" as="geometry"/>
                 </mxCell>
-                <mxCell id="174" value="(RI-5)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                <mxCell id="174" value="&lt;font color=&quot;#000000&quot;&gt;(RI-5)&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry x="391.25" y="490" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="175" value="(RI-5): A largura e altura têm de ser em cêntimetros" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                <mxCell id="175" value="&lt;font color=&quot;#000000&quot;&gt;(RI-5): A largura e altura têm de ser em cêntimetros&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry y="980" width="240" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="176" value="(RI-6)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                <mxCell id="176" value="&lt;font color=&quot;#000000&quot;&gt;(RI-6)&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry x="420" y="-160" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="177" value="(RI-6): Um retalhista só pode repôr produtos de uma categoria de que esteja responsável" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                <mxCell id="177" value="&lt;font color=&quot;#000000&quot;&gt;(RI-6): Um retalhista só pode repôr produtos de uma categoria de que esteja responsável&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry x="8" y="1020" width="250" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="178" value="(RI-7)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                <mxCell id="178" value="&lt;font color=&quot;#000000&quot;&gt;(RI-7)&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry x="-90" y="400" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="179" value="(RI-7): Numa IVM cada categoria só pode estar associada a um retalhista" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
+                <mxCell id="179" value="&lt;font color=&quot;#000000&quot;&gt;(RI-7): Numa IVM cada categoria só pode estar associada a um retalhista&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry x="8" y="1060" width="260" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="180" value="" style="shape=link;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=-0.005;entryY=0.557;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="181" target="pVvuMbzZNNWRI8RjfoYQ-9">
-                    <mxGeometry width="100" relative="1" as="geometry">
-                        <mxPoint x="310" y="350" as="sourcePoint"/>
-                        <mxPoint x="410" y="350" as="targetPoint"/>
+                <mxCell id="181" value="" style="shape=flexArrow;endArrow=classic;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="pVvuMbzZNNWRI8RjfoYQ-9" target="180">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="180" y="280" as="sourcePoint"/>
+                        <mxPoint x="230" y="230" as="targetPoint"/>
                         <Array as="points">
-                            <mxPoint x="347" y="386"/>
+                            <mxPoint x="346" y="383"/>
                         </Array>
                     </mxGeometry>
-                </mxCell>
-                <mxCell id="181" value="" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="309.5" y="230" width="73" height="74" as="geometry"/>
-                </mxCell>
-                <mxCell id="183" value="contém" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="315.25" y="236" width="61.5" height="62" as="geometry"/>
-                </mxCell>
-                <mxCell id="185" value="&amp;lt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=-90;" vertex="1" parent="1">
-                    <mxGeometry x="331" y="267" width="30" height="20" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
