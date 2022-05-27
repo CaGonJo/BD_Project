@@ -1,10 +1,10 @@
 <mxfile host="65bd71144e">
     <diagram id="00-uPUe9AZms_T46HA7c" name="Exposição Gulbenkian">
-        <mxGraphModel dx="1584" dy="1675" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1978" dy="1960" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="180" value="" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="180" value="" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="306" y="243" width="80" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="2" value="IVM" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -325,16 +325,6 @@
                 <mxCell id="96" value="contém&lt;br&gt;" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="314" y="253" width="66" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="97" value="" style="endArrow=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="2" target="180" edge="1">
-                    <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="350" y="320" as="sourcePoint"/>
-                        <mxPoint x="330" y="210" as="targetPoint"/>
-                        <Array as="points">
-                            <mxPoint x="347" y="71"/>
-                            <mxPoint x="347" y="151"/>
-                        </Array>
-                    </mxGeometry>
-                </mxCell>
                 <mxCell id="99" value="&amp;lt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=-90;" parent="1" vertex="1">
                     <mxGeometry x="331" y="284" width="30" height="20" as="geometry"/>
                 </mxCell>
@@ -518,12 +508,21 @@
                 <mxCell id="179" value="&lt;font color=&quot;#000000&quot;&gt;(RI-7): Numa IVM cada categoria só pode estar associada a um retalhista&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#FFFFFF;" parent="1" vertex="1">
                     <mxGeometry x="8" y="1060" width="260" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="181" value="" style="shape=flexArrow;endArrow=classic;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="pVvuMbzZNNWRI8RjfoYQ-9" target="180">
+                <mxCell id="181" value="" style="shape=flexArrow;endArrow=classic;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="pVvuMbzZNNWRI8RjfoYQ-9" target="180" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="180" y="280" as="sourcePoint"/>
                         <mxPoint x="230" y="230" as="targetPoint"/>
                         <Array as="points">
                             <mxPoint x="346" y="383"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="182" value="" style="shape=link;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="2" target="180">
+                    <mxGeometry width="100" relative="1" as="geometry">
+                        <mxPoint x="300" y="200" as="sourcePoint"/>
+                        <mxPoint x="400" y="200" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="346" y="71"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
