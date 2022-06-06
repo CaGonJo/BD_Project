@@ -1,3 +1,5 @@
+
+
 --1)
 
 SELECT p.ean, p.descr
@@ -18,7 +20,6 @@ GROUP BY p.serial_number
 SELECT COUNT(h.sub_category_name) AS sub_categ_count
 FROM has_other AS h
 WHERE h.super_category_name='Sopas Take-Away'
-GROUP BY h.super_category_name
 
 
 --4)
