@@ -49,3 +49,9 @@ $$
 $$ 
 \text{max\_product} \leftarrow ( \pi_{\text{ean, descr}}(\text{products\_with\_units}) - \pi_{\text{ean, descr}} (\text{products\_with\_units} \bowtie_{\text{sum(units)}<\text{units2}} \text{product\_with\_units2} ) )
 $$
+
+## Pergunta 4.1
+
+$$
+\pi_{\text{ean, descr }} (\text{Product} \bowtie (_{ean, descr}G_{\text{max(sum)}}(_{ean, descr}G_{\text{sum(units)}}(\text{Replenishment\_event})))
+$$
