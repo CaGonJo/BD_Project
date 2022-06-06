@@ -3,11 +3,11 @@
 ## Pergunta 1
 
 $$
-\text{high\_replanished\_products\_from\_instant} \leftarrow \pi_{\text{ean, units}}(\sigma_{\text{instant > "2021/12/31 23:59" and }}\sigma_{\text{units > 10}}\text{(Replenishment\_event)})
+\text{high\_replanished\_products\_from\_instant} \leftarrow \pi_{\text{ean}}(\sigma_{\text{instant > "2021/12/31 23:59" and }}\sigma_{\text{units > 10}}\text{(Replenishment\_event)})
 $$ 
 
 $$
-\text{products\_with\_description} \leftarrow \pi_{\text{ean, descr}}(\text{Product} \bowtie \text{high\_replanished\_products\_from\_instant}) 
+\text{products\_with\_description} \leftarrow (\text{Product} \bowtie \text{high\_replanished\_products\_from\_instant}) 
 $$
 
 $$

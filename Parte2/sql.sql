@@ -7,7 +7,7 @@ FROM Product AS p
 INNER JOIN Replenishment_event AS r ON r.ean=p.ean
 INNER JOIN has AS h ON h.ean=p.ean
 WHERE r.instant > 2021/12/31 23:59 AND r.units > 10 AND h.categ_name='Barras Energéticas'
-
+GROUP BY p.ean
 --2)
 
 SELECT p.serial_number
