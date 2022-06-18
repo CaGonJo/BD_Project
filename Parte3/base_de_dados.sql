@@ -1,26 +1,30 @@
 create table categoria (
     nome    varchar(50),
-    primary key(nome)
+    primary key(nome),
+    check(nome in (select nome from super_categoria) or nome in (select nome from categoria_simples))
 );
 
 create table categoria_simples (
     nome    varchar(50),
     foreign key(nome) references categoria(nome),
-    primary key(nome)
+    primary key(nome),
+    check(nome not in (select nome from super_categoria))
 );
 
 create table super_categoria (
     nome    varchar(50),
     foreign key(nome) references categoria(nome),
-    primary key(nome)
+    primary key(nome),
+    check(nome in (select super_cat from tem_outra))
 );
 
 create table tem_outra (
-    nome_super_cat  varchar(50),
-    nome_cat    varchar(50),
-    foreign key(nome_super_cat) references super_categoria(nome),
-    foreign key(nome_cat) references categoria(nome),
-    primary key(nome_cat)
+    super_cat  varchar(50),
+    cat    varchar(50),
+    foreign key(super_cat) references super_categoria(nome),
+    foreign key(cat) references categoria(nome),
+    primary key(cat),
+    check (super_cat NOT LIKE cat)
 );
 
 create table produto (
@@ -28,7 +32,13 @@ create table produto (
     descr   varchar(255),
     cat     varchar(50),
     primary key(ean),
-    foreign key(cat) references categoria(nome)
+    foreign key(cat) references categoria(nome),
+    check (ean in (select ean from tem_categoria))
+);
+
+create table tem_categoria (
+    foreign key(ean) references produto,
+    foreign key(cat) references categoria 
 );
 
 create table IVM (
@@ -41,7 +51,7 @@ create table ponto_de_retalho (
     nome    varchar(50),
     distrito    varchar(50),
     concelho    varchar(50),
-    primary key(nome);
+    primary key(nome)
 );
 
 create table instalada_em (
@@ -59,8 +69,8 @@ create table prateleira (
     fabricante  varchar(50),
     altura  integer NOT NULL CHECK (altura > 0),
     nome    varchar(50),
-    foreign key(nome) references(categoria),
-    foreign key(num_serie, fabricante) references(IVM),
+    foreign key(nome) references categoria,
+    foreign key(num_serie, fabricante) references IVM,
     primary key(nro, num_serie, fabricante)
 );
 
@@ -72,8 +82,8 @@ create table planograma (
     faces   integer CHECK (faces > 0),
     unidades    integer NOT NULL CHECK (unidades > 0),
     loc     integer NOT NULL CHECK (loc >= 0),
-    foreign key(ean) references(produto),
-    foreign key(nro, num_serie, fabricante) references(prateleira),
+    foreign key(ean) references produto,
+    foreign key(nro, num_serie, fabricante) references prateleira,
     primary key(ean, nro, num_serie, fabricante)
 );
 
@@ -88,9 +98,9 @@ create table responsavel_por (
     tin     integer,
     num_serie   integer,
     fabricante  varchar(50),
-    foreign key(num_serie, fabricante) references(IVM),
-    foreign key(tin) references(retalhista),
-    foreign key(nome_cat) references(categoria),
+    foreign key(num_serie, fabricante) references IVM,
+    foreign key(tin) references retalhista,
+    foreign key(nome_cat) references categoria,
     primary key(num_serie, fabricante)
 );
 
@@ -102,10 +112,50 @@ create table evento_reposicao(
     instante    integer NOT NULL CHECK (instante >= 0),
     unidades    integer NOT NULL CHECK (unidades > 0),
     tin     integer,
-    foreign key(ean, nro, num_serie, fabricante) references(planograma),
-    foreign key(tin) references(retalhista),
-    primary key(ean, nro, num_serie, fabricante, instante),
+    foreign key(ean, nro, num_serie, fabricante) references planograma,
+    foreign key(tin) references retalhista,
+    primary key(ean, nro, num_serie, fabricante, instante)
 );
+
+create function num_unidades_permitido () returns trigger as $$
+    declare max_unid integer;
+    begin
+        SELECT unidades into max_unid
+        FROM planograma
+        WHERE planograma.ean=new.ean and plnograma.nro=new.nro and planograma.num_serie=new.num_serie and planograma.fabricante LIKE new.fabricante
+        
+        if new.unidades>max_unid then
+            raise exception 'O numero de unidades do evento de reposicao é superior ao permitido pelo planograma';
+        end if;
+        return new;
+    end;
+    $$ Language plpgsql;
+
+create trigger verifica_unidades_reposicao before insert on evento_reposicao
+for each row execute procedure num_unidades_permitido();
+
+
+create function cat_prateleira () returns trigger as $$
+    declare categoria varchar(50);
+    begin
+
+        SELECT nome into categoria
+        FROM prateleira
+        WHERE prateleira.nro=new.nro and prateleira.num_serie=new.num_serie and prateleira.fabricante LIKE new.fabricante
+
+        if new.ean not in   (SELECT ean
+                            FROM tem_categoria
+                            WHERE tem_categoria.nome=categoria)
+        
+        then
+            raise exception 'Um produto só pode ser reposto numa prateleira que apresente uma das categorias desse produto.';
+        end if;
+        return new;
+    end;
+    $$ Language plpgsql;
+
+create trigger verifica_planograma before insert on planograma
+for each row execute procedure cat_prateleira();
 
 ----------------------------------------
 -- Populate Relations 
@@ -223,3 +273,4 @@ insert into retalhista values (10, "Johnny Boy");
 insert into retalhista values (20, "Xalom");
 insert into retalhista values (30, "Nunca da push");
 insert into retalhista values (40, "Carol");
+
