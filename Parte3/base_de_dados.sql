@@ -37,6 +37,8 @@ create table produto (
 );
 
 create table tem_categoria (
+    ean     numeric(13, 0),
+    cat     varchar(50),
     foreign key(ean) references produto,
     foreign key(cat) references categoria 
 );

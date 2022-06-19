@@ -29,6 +29,13 @@ class Prateleira:
         self.altura = altura
         self.nome = nome
 
+    def __str__(self):
+        return "({},{},\'{}\',{},\'{}\')".format(self.nro,
+        self.num_serie,self.fabricante,self.altura, self.nome)
+
+    def sqlPrint(self):
+        print("insert into prateleira values "+str(self))
+
 class Categoria:
 
     def __init__(self,nome):
@@ -52,12 +59,29 @@ class Planograma:
     def sqlPrint(self):
         print("insert into planograma values "+str(self))
 
+class Retailer:
+
+    def __init__(self,tin,nome):
+        self.tin = tin
+        self.nome = nome
+
+
+class Responsavel:
+
+    def __init__(self,categ,tin,nserie,fabri):
+        self.nome_cat = categ
+        self.tin = tin
+        self.num_serie = nserie
+        self.fabricante = fabri
+
+
 
 
 ###########
 # FUNCOES #
 ###########
 
+# GETS #
 
 def get_produto_list_from_sql_tuples(tupls):
     products = []
@@ -83,6 +107,43 @@ def get_categ_list_from_sql_tuples(tupls):
         categs += [Categoria(t[0])]
     return categs
 
+def get_retailer_list_from_sql_tuples(tupls):
+    rets = []
+    for t in tupls:
+        rets += [Retailer(t[0],t[1])]
+    return rets
+
+def get_prateleiras_refors(ivms,super_categs,simple_categs,retailers):
+    heights = [10,15,20]
+    prats,refors=[],[]
+    retailers_num = len(retailers)
+    for ivm in ivms:
+        num_prats = ra.randint(3,5)
+        ivm_categ = super_categs.keys[ra.randint(0,2)]
+        ivm_sub_categs = super_categs[ivm_categ]
+        num_categs = len(ivm_sub_categs)
+        for i in range(num_prats):
+            height  = heights[ra.randint(0,2)]
+            categ = ivm_sub_categs[(i%num_categs)]
+            prats += [
+                Prateleira((i+1),ivm.num_serie,ivm.fabricante,height,categ)
+            ]
+        retailer = retailers[ra.randint(0,(retailers_num-1))]
+        refors += [
+            Responsavel(ivm_categ,retailer.tin,ivm.num_serie,
+            ivm.fabricante)
+        ]
+    return prats, refors
+
+
+
+def get_tem_categoria(prods):
+    for produto in prods:
+        print("insert into tem_categoria values ({},\'{}\')".format(produto.ean,produto.cat))
+
+def get_produtos(prods):
+    for produto in prods:
+        print("insert into produto values ({},\'{}\',\'{}\')".format(product.ean,product.descr,product.categ))
 
 def get_planograms(prods,ivms,ptls,categs):
     faces = 3
@@ -103,6 +164,95 @@ def get_planograms(prods,ivms,ptls,categs):
                 unidades[random1],locs[random2])
             ]
     return planograms
+
+
+# GENERATES #
+
+SuperMercados = ['Pingo Doce','Continente','Lidl','Aldi','PorSi',
+'Dia','Mercadona','Carefour']
+Frutas = ['Manga','Limao','Maracuja','Laranja','Ananas','Banana',
+    'Maca','Abacaxi','Cenoura','Cereja','Morango','Frutos Vermelhos','Framboesa']
+
+def generate_salgados(start_ean):
+    #Fritos
+    fritos=[]
+    Marcas = ['Lays','Ruffles','Pala-pala','Pringles'] + SuperMercados
+    Sabores = ['Presunto','Camponesa','Ketchup','Queijo','Tradicionais',
+    'Picantes','Pimentos','']
+    Pesos = ['150g','250g','400g','500g']
+    for m in Marcas:
+        for s in Sabores:
+            for p in Pesos:
+                fritos += [
+                    Produto(start_ean,'Batatas {} {} {}'.format(m,s,p),'Fritos')
+                ]
+                start_ean+=1
+
+    #Sandes
+    sandes = []
+    Tipos = ['Croissant','Pao de Mafra','Pao Integral','Pao Centeio',
+    'Pao Trigo','Baguete','Pao de Forma','Pao com Sementes','Brioche']
+    Condimentos = ['Manteiga','Fiambre','Queijo','Atun','Salmao',
+    'Milho','Azeitonas','Doce de Morango','Marmelada','Doce de Laranja','Goiabada']
+    for t in Tipos:
+        for c in Condimentos:
+            sandes = [
+                Produto(start_ean,'{} com {}'.format(t,c),'Sandes')
+            ]
+            start_ean+=1
+    return fritos + sandes
+
+def generate_bebidas(start_ean):
+    #Aguas
+    aguas = []
+    Marcas = ['Vitalis','Pedras','Luso','Penacova','Vimeiro',
+    'Frize']+SuperMercados
+    Sabor = ['Natural']+Frutas
+    Gas = ['Com Gas', 'Sem Gas']
+    Quantidade = ['0.33cl','0.5cl','0.75cl']
+    for m in Marcas:
+        for s in Sabor:
+            for g in Gas:
+                for q in Quantidade:
+                    aguas += [
+                        Produto(start_ean,'Agua {} {} {} {}'.format(m,s,g,q),
+                        'Agua')
+                    ]
+                    start_ean += 1
+    #Iogurtes
+    iog = []
+    Marcas = ['Danone','Nestle','Alpro','Mimosa','Vigor']+SuperMercados
+    Sabor = Frutas + ['Bolacha','Acucarado','Natural']
+    for m in Marcas:
+        for s in Sabor:
+            for q in Quantidade:
+                iog += [
+                    Produto(start_ean,'Iogurte {} {} {}'.format(m,s,q),'Iogurte')
+                ]
+                start_ean += 1
+    #Rerigerantes
+    refri = []
+    Marcas = SuperMercados+['Powerade','Gatorade','Redbull','Lipton','Nestea',
+    'Sumol','B!','Brisa','Compal']
+    for m in Marcas:
+        for f in Frutas:
+            for q in Quantidade:
+                refri += [
+                    Produto(start_ean,'{} {} {}'.format(m,f,q),'Refrigerante')
+                ]
+                start_ean += 1
+    refri += [Produto(start_ean,'Coca-Cola','Refrigerante')]    #mega rare
+    return iog+refri+aguas
+
+
+def generate_doces(start_ean):
+    #Bolos
+    bolos = []
+
+
+
+def generate_products():
+    
         
 
 
@@ -133,8 +283,6 @@ Produtos = [(1234567890123, 'Bolo de Cafe', 'Bolo'),
 (1234567890141, 'Chips Ahoy', 'Bolacha'),
 (1234567890142, 'Sandes de atum', 'Sandes'),
 (1234567890143, 'Hot Dog', 'Sandes'),
-(1234567890144, 'Rissol de camarao', 'Salgado'),
-(1234567890145, 'Croquete', 'Salgado')
 ]
 
 
@@ -165,10 +313,20 @@ Categs= [('Bolo'),
 ('Sandes'),
 ('Batatas fritas')]
 
-Super_Categs = ['Doce',
-'Bebida',
-'Salgado']
+Super_Categs = {'Doce':['Bolo','Bolacha','Fruta'],
+'Bebida':['Agua','Iogurte','Refrigerante'],
+'Salgado':['Fritos','Sandes']}
 
+Simple_Categs = {
+    'Bolo':'Doce',
+    'Bolacha':'Doce',
+    'Fruta':'Doce',
+    'Agua':'Bebida',
+    'Iogurte':'Bebida',
+    'Refrigerante':'Bebida',
+    'Fritos':'Salgado',
+    'Sandes':'Salgado'
+}
 
 
 #######
@@ -177,9 +335,10 @@ Super_Categs = ['Doce',
 
 PyCategs = get_categ_list_from_sql_tuples(Categs)
 PyIVMs = get_ivm_list_from_sql_tuples(IVMs)
-PyPtls = get_prateleira_list_from_sql_tuples(Ptls)
 PyProdutos = get_produto_list_from_sql_tuples(Produtos)
+PyRetailers = get_retailer_list_from_sql_tuples(Retailers)
 
+PyPtls, PyReFors = get_prateleiras_refors(PyIVMs,Super_Categs,Simple_Categs,PyRetailers)
 PyPlanograms = get_planograms(PyProdutos,PyIVMs,PyPtls,PyCategs)
 
 for plano in PyPlanograms:
