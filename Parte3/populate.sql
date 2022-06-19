@@ -29,22 +29,22 @@ insert into tem_outra values ('Bebida','Agua');
 insert into tem_outra values ('Doce','Bolacha');
 
 
-insert into produto values (01234567890123, 'Bolo de Cafe', 'Bolo');
-insert into produto values (01234567890128, 'Bolo de Laranja', 'Bolo');
-insert into produto values (01234567890123, 'Waffle', 'Bolo');
-insert into produto values (01234567890124, 'Fanta', 'Refrigerante');
-insert into produto values (01234567890129, 'Coca-Cola', 'Refrigerante');
-insert into produto values (01234567890129, 'Powerade', 'Refrigerante');
-insert into produto values (01234567890129, 'RedBull', 'Refrigerante');
-insert into produto values (01234567890125, 'Luso', 'Agua');
-insert into produto values (01234567890130, 'Vitalis', 'Agua');
-insert into produto values (01234567890127, 'Cafe', 'Bebida');
-insert into produto values (01234567890130, 'Tuc', 'Bolacha');
-insert into produto values (01234567890130, 'Bolacha Maria', 'Bolacha');
-insert into produto values (01234567890130, 'Maca', 'Fruta');
-insert into produto values (01234567890130, 'Banana', 'Fruta');
-insert into produto values (01234567890130, 'Batatas Lays', 'Salgado');
-insert into produto values (01234567890130, 'Batatas Pala-Pala', 'Salgado');
+insert into produto values (1234567890123, 'Bolo de Cafe', 'Bolo');
+insert into produto values (1234567890124, 'Bolo de Laranja', 'Bolo');
+insert into produto values (1234567890125, 'Waffle', 'Bolo');
+insert into produto values (1234567890126, 'Fanta', 'Refrigerante');
+insert into produto values (1234567890127, 'Coca-Cola', 'Refrigerante');
+insert into produto values (1234567890128, 'Powerade', 'Refrigerante');
+insert into produto values (1234567890129, 'RedBull', 'Refrigerante');
+insert into produto values (1234567890130, 'Luso', 'Agua');
+insert into produto values (1234567890131, 'Vitalis', 'Agua');
+insert into produto values (1234567890132, 'Cafe', 'Bebida');
+insert into produto values (1234567890133, 'Tuc', 'Bolacha');
+insert into produto values (1234567890134, 'Bolacha Maria', 'Bolacha');
+insert into produto values (1234567890135, 'Maca', 'Fruta');
+insert into produto values (1234567890136, 'Banana', 'Fruta');
+insert into produto values (1234567890137, 'Batatas Lays', 'Salgado');
+insert into produto values (1234567890138, 'Batatas Pala-Pala', 'Salgado');
 
 insert into IVM values (1201, 'Yamaha');
 insert into IVM values (1202, 'Yamaha');
@@ -96,7 +96,7 @@ insert into ponto_de_retalho values ("Astride", "Lisboa", "Odivelas");
 insert into ponto_de_retalho values ("Piedade", "Lisboa", "Amoreiras");
 insert into ponto_de_retalho values ("Rosa", "Leira", "Caldas");
 
-insert into instalada_em values (1201, 'Yamaha', 'Ezequila');
+insert into instalada_em values (1201, 'Yamaha', 'Ezequiel');
 insert into instalada_em values (1202, 'Yamaha', 'Asdrubal');
 insert into instalada_em values (2301, 'Ducati', 'Gertrudes');
 insert into instalada_em values (2302, 'Ducati', 'Anibal');
@@ -114,3 +114,15 @@ insert into retalhista values (10, "Johnny Boy");
 insert into retalhista values (20, "Xalom");
 insert into retalhista values (30, "Nunca da push");
 insert into retalhista values (40, "Carol");
+
+insert into planograma values (1234567890123, 1, 2301, 'Ducati')
+insert into planograma values (1234567890123, 1, 2302, 'Ducati')
+insert into planograma values (1234567890123, 1, 3402, 'Ferrari')
+insert into planograma values (1234567890123, 1, 5601, 'McLaren')
+insert into planograma values (1234567890124, 1, 2301, 'Ducati')
+insert into planograma values (1234567890124, 1, 2302, 'Ducati')
+insert into planograma values (1234567890124, 1, 3402, 'Ferrari')
+insert into planograma values (1234567890124, 1, 1202, 'Yamaha')
+insert into planograma values (1234567890125, 1, 5601, 'McLaren')
+insert into planograma values (1234567890125, 1, 2301, 'Ducati')
+insert into planograma values (1234567890125, 1, 2302, 'Ducati')
