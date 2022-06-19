@@ -126,8 +126,16 @@ Produtos = [(1234567890123, 'Bolo de Cafe', 'Bolo'),
 (1234567890134, 'Bolacha Maria', 'Bolacha'),
 (1234567890135, 'Maca', 'Fruta'),
 (1234567890136, 'Banana', 'Fruta'),
-(1234567890137, 'Batatas Lays', 'Salgado'),
-(1234567890138, 'Batatas Pala-Pala', 'Salgado')]
+(1234567890137, 'Batatas Lays', 'Batatas fritas'),
+(1234567890138, 'Batatas Pala-Pala', 'Batatas fritas'),
+(1234567890139, 'Pedras Limao', 'Agua'),
+(1234567890140, 'Sandes Mista', 'Sandes'),
+(1234567890141, 'Chips Ahoy', 'Bolacha'),
+(1234567890142, 'Sandes de atum', 'Sandes'),
+(1234567890143, 'Hot Dog', 'Sandes'),
+(1234567890144, 'Rissol de camarao', 'Salgado'),
+(1234567890145, 'Croquete', 'Salgado')
+]
 
 
 IVMs = [(1201, 'Yamaha'),
@@ -145,28 +153,6 @@ IVMs = [(1201, 'Yamaha'),
 (5604, 'Mclaren')]
 
 
-Ptls = [(1, 1201, 'Yamaha', 10, 'Bolo'),
-(2, 1201, 'Yamaha', 10, 'Salgado'),
-(1, 2301, 'Ducati', 10, 'Bolo'),
-(2, 2301, 'Ducati', 10, 'Iogurte'),
-(1, 2302, 'Ducati', 10, 'Bolo'),
-(2, 2302, 'Ducati', 10, 'Refrigerante'),
-(1, 3401, 'Ferrari', 10, 'Bolacha'),
-(2, 3401, 'Ferrari', 20, 'Agua'),
-(3, 3401, 'Ferrari', 20, 'Salgado'),
-(1, 3402, 'Ferrari', 10, 'Bolo'),
-(2, 3402, 'Ferrari', 20, 'Agua'),
-(3, 3402, 'Ferrari', 10, 'Refrigerante'),
-(1, 4501, 'KTM', 10, 'Fruta'),
-(2, 4501, 'KTM', 10, 'Bolacha'),
-(3, 4501, 'KTM', 20, 'Salgado'),
-(1, 5601, 'McLaren', 10, 'Bolo'),
-(2, 5601, 'McLaren', 10, 'Bolacha'),
-(1, 1202, 'Yamaha', 10, 'Bolo'),
-(2, 1202, 'Yamaha', 10, 'Refrigerante'),
-(3, 1201, 'Yamaha', 20, 'Salgado')]
-
-
 Categs= [('Bolo'),
 ('Iogurte'),
 ('Salgado'),
@@ -175,7 +161,13 @@ Categs= [('Bolo'),
 ('Bolacha'),
 ('Fruta'),
 ('Doce'),
-('Bebida')]
+('Bebida'),
+('Sandes'),
+('Batatas fritas')]
+
+Super_Categs = ['Doce',
+'Bebida',
+'Salgado']
 
 
 

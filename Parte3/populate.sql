@@ -10,23 +10,31 @@ insert into categoria values ('Bolacha');
 insert into categoria values ('Fruta');
 insert into categoria values ('Doce');
 insert into categoria values ('Bebida');
+insert into categoria values ('Sandes');
+insert into categoria values ('Batatas fritas');
 
 insert into super_categoria values ('Doce');
 insert into super_categoria values ('Bebida');
+insert into super_categoria values ('Salgado');
+
 
 insert into categoria_simples values ('Bolo');
 insert into categoria_simples values ('Iogurte');
-insert into categoria_simples values ('Salgado');
 insert into categoria_simples values ('Refrigerante');
 insert into categoria_simples values ('Agua');
 insert into categoria_simples values ('Bolacha');
 insert into categoria_simples values ('Fruta');
+insert into categoria_simples values ('Sandes');
+insert into categoria_simples values ('Batatas fritas');
 
 insert into tem_outra values ('Doce','Bolo');
+insert into tem_outra values ('Doce','Fruta');
 insert into tem_outra values ('Bebida','Iogurte');
 insert into tem_outra values ('Bebida','Refrigerante');
 insert into tem_outra values ('Bebida','Agua');
 insert into tem_outra values ('Doce','Bolacha');
+insert into tem_outra values ('Salgado','Batatas fritas');
+insert into tem_outra values ('Salgado','Sandes');
 
 
 insert into produto values (1234567890123, 'Bolo de Cafe', 'Bolo');
@@ -45,6 +53,13 @@ insert into produto values (1234567890135, 'Maca', 'Fruta');
 insert into produto values (1234567890136, 'Banana', 'Fruta');
 insert into produto values (1234567890137, 'Batatas Lays', 'Salgado');
 insert into produto values (1234567890138, 'Batatas Pala-Pala', 'Salgado');
+insert into produto values (1234567890139, 'Pedras Limao', 'Agua');
+insert into produto values (1234567890140, 'Sandes Mista', 'Sandes');
+insert into produto values (1234567890141, 'Chips Ahoy', 'Bolacha');
+insert into produto values (1234567890142, 'Sandes de atum', 'Sandes');
+insert into produto values (1234567890143, 'Hot Dog', 'Sandes');
+insert into produto values (1234567890144, 'Rissol de camarao', 'Salgado');
+insert into produto values (1234567890145, 'Croquete', 'Salgado');
 
 insert into IVM values (1201, 'Yamaha');
 insert into IVM values (1202, 'Yamaha');
