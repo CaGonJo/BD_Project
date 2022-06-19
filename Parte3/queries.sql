@@ -1,4 +1,18 @@
---Qual o nome do retalhista (ou retalhistas) responsáveis pela reposição do maior número de categorias? 
+--Qual o nome do retalhista (ou retalhistas) responsáveis pela reposição do maior número de categorias?
+WITH t as (
+    SELECT nome, contagem
+    FROM retalhista NATURAL JOIN (
+        SELECT tin, COUNT(DISTINCT nome_cat) as contagem
+        FROM responsavel_por
+        GROUP BY tin
+    )
+)
+SELECT t.nome
+FROM t
+WHERE t.contagem = (
+    SELECT MAX(t.contagem)
+    FROM t
+    )
 
 --Qual o nome do ou dos retalhistas que são responsáveis por todas as categorias simples?
 

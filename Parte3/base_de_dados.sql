@@ -273,3 +273,4 @@ insert into retalhista values (10, "Johnny Boy");
 insert into retalhista values (20, "Xalom");
 insert into retalhista values (30, "Nunca da push");
 insert into retalhista values (40, "Carol");
+
