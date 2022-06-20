@@ -10,13 +10,12 @@ create function num_unidades_permitido () returns trigger as $$
         end if;
         return new;
     end;
-    $$ Language plpgsql;
 
 create trigger verifica_unidades_reposicao before insert on evento_reposicao
 for each row execute procedure num_unidades_permitido();
 
 
-create function cat_prateleira () returns trigger as $$
+create function cat_prateleira () returns trigger as 
     declare categoria varchar(50);
     begin
 
@@ -33,7 +32,6 @@ create function cat_prateleira () returns trigger as $$
         end if;
         return new;
     end;
-    $$ Language plpgsql;
 
 create trigger verifica_planograma before insert on planograma
 for each row execute procedure cat_prateleira();

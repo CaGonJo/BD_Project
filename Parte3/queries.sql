@@ -1,11 +1,11 @@
 --Qual o nome do retalhista (ou retalhistas) responsáveis pela reposição do maior número de categorias?
 WITH t as (
     SELECT nome, contagem
-    FROM retalhista NATURAL JOIN (
+    FROM retalhista AS r NATURAL JOIN (
         SELECT tin, COUNT(DISTINCT nome_cat) as contagem
         FROM responsavel_por
         GROUP BY tin
-    )
+    ) AS rp
 )
 SELECT t.nome
 FROM t
@@ -16,14 +16,25 @@ WHERE t.contagem = (
 
 --Qual o nome do ou dos retalhistas que são responsáveis por todas as categorias simples?
 
-SELECT r.nome
-FROM retalhista as r NATURAL JOIN responsavel_por as rp
-WHERE tin = ALL (
-    SELECT tin
-    FROM rp
-    WHERE nome_cat IN categoria_simples.nome
-);
+WITH t as (
+    SELECT nome, contagem
+    FROM retalhista NATURAL JOIN (
+        SELECT tin, COUNT(DISTINCT rp.nome_cat) as contagem
+        FROM responsavel_por as rp, categoria_simples as cs
+        WHERE rp.nome_cat in cs.nome
+        GROUP BY tin
+    )
+)
 
+SELECT r.nome
+FROM retalhista as r
+WHERE (
+    SELECT COUNT(DISTINCT nome) 
+    FROM categoria_simples) = (
+
+    SELECT contagem 
+    FROM t
+    WHERE r.nome=t.nome);
 --Quais os produtos (ean) que nunca foram repostos?
 
 SELECT ean
