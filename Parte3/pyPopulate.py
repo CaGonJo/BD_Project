@@ -149,7 +149,7 @@ class Replenishment_Event:
         self.tin = tin
 
     def __str__(self):
-        return "({},{},{},\'{}\',{},{},{})".format(self.ean,self.nro,self.num_serie,
+        return "({},{},{},\'{}\',\'{}\',{},{})".format(self.ean,self.nro,self.num_serie,
         self.fabricante,self.instante,self.unidades,self.tin)
 
     def sqlStr(self):
