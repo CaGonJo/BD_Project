@@ -1,21 +1,21 @@
 create table categoria (
     nome    varchar(50),
-    primary key(nome),
-    check(nome in (select nome from super_categoria) or nome in (select nome from categoria_simples))
+    primary key(nome)
+    --check(nome in (select nome from super_categoria) or nome in (select nome from categoria_simples))
 );
 
 create table categoria_simples (
     nome    varchar(50),
     foreign key(nome) references categoria(nome),
-    primary key(nome),
-    check(nome not in (select nome from super_categoria))
+    primary key(nome)
+    --check(nome not in (select nome from super_categoria))
 );
 
 create table super_categoria (
     nome    varchar(50),
     foreign key(nome) references categoria(nome),
-    primary key(nome),
-    check(nome in (select super_cat from tem_outra))
+    primary key(nome)
+    --check(nome in (select super_cat from tem_outra))
 );
 
 create table tem_outra (
@@ -32,11 +32,13 @@ create table produto (
     descr   varchar(255),
     cat     varchar(50),
     primary key(ean),
-    foreign key(cat) references categoria(nome),
-    check (ean in (select ean from tem_categoria))
+    foreign key(cat) references categoria(nome)
+    --check (ean in (select ean from tem_categoria))
 );
 
 create table tem_categoria (
+    ean     numeric(13, 0),
+    cat     varchar(50),
     foreign key(ean) references produto,
     foreign key(cat) references categoria 
 );
@@ -109,7 +111,7 @@ create table evento_reposicao(
     nro     integer,
     num_serie   integer,
     fabricante  varchar(50),
-    instante    integer NOT NULL CHECK (instante >= 0),
+    instante    timestamp NOT NULL, --CHECK (instante >= 0),
     unidades    integer NOT NULL CHECK (unidades > 0),
     tin     integer,
     foreign key(ean, nro, num_serie, fabricante) references planograma,

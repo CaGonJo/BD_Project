@@ -10,41 +10,31 @@ insert into categoria values ('Bolacha');
 insert into categoria values ('Fruta');
 insert into categoria values ('Doce');
 insert into categoria values ('Bebida');
+insert into categoria values ('Sandes');
+insert into categoria values ('Batatas fritas');
 
 insert into super_categoria values ('Doce');
 insert into super_categoria values ('Bebida');
+insert into super_categoria values ('Salgado');
+
 
 insert into categoria_simples values ('Bolo');
 insert into categoria_simples values ('Iogurte');
-insert into categoria_simples values ('Salgado');
 insert into categoria_simples values ('Refrigerante');
 insert into categoria_simples values ('Agua');
 insert into categoria_simples values ('Bolacha');
 insert into categoria_simples values ('Fruta');
+insert into categoria_simples values ('Sandes');
+insert into categoria_simples values ('Batatas fritas');
 
 insert into tem_outra values ('Doce','Bolo');
+insert into tem_outra values ('Doce','Fruta');
 insert into tem_outra values ('Bebida','Iogurte');
 insert into tem_outra values ('Bebida','Refrigerante');
 insert into tem_outra values ('Bebida','Agua');
 insert into tem_outra values ('Doce','Bolacha');
-
-
-insert into produto values (01234567890123, 'Bolo de Cafe', 'Bolo');
-insert into produto values (01234567890128, 'Bolo de Laranja', 'Bolo');
-insert into produto values (01234567890123, 'Waffle', 'Bolo');
-insert into produto values (01234567890124, 'Fanta', 'Refrigerante');
-insert into produto values (01234567890129, 'Coca-Cola', 'Refrigerante');
-insert into produto values (01234567890129, 'Powerade', 'Refrigerante');
-insert into produto values (01234567890129, 'RedBull', 'Refrigerante');
-insert into produto values (01234567890125, 'Luso', 'Agua');
-insert into produto values (01234567890130, 'Vitalis', 'Agua');
-insert into produto values (01234567890127, 'Cafe', 'Bebida');
-insert into produto values (01234567890130, 'Tuc', 'Bolacha');
-insert into produto values (01234567890130, 'Bolacha Maria', 'Bolacha');
-insert into produto values (01234567890130, 'Maca', 'Fruta');
-insert into produto values (01234567890130, 'Banana', 'Fruta');
-insert into produto values (01234567890130, 'Batatas Lays', 'Salgado');
-insert into produto values (01234567890130, 'Batatas Pala-Pala', 'Salgado');
+insert into tem_outra values ('Salgado','Batatas fritas');
+insert into tem_outra values ('Salgado','Sandes');
 
 insert into IVM values (1201, 'Yamaha');
 insert into IVM values (1202, 'Yamaha');
@@ -96,7 +86,7 @@ insert into ponto_de_retalho values ("Astride", "Lisboa", "Odivelas");
 insert into ponto_de_retalho values ("Piedade", "Lisboa", "Amoreiras");
 insert into ponto_de_retalho values ("Rosa", "Leira", "Caldas");
 
-insert into instalada_em values (1201, 'Yamaha', 'Ezequila');
+insert into instalada_em values (1201, 'Yamaha', 'Ezequiel');
 insert into instalada_em values (1202, 'Yamaha', 'Asdrubal');
 insert into instalada_em values (2301, 'Ducati', 'Gertrudes');
 insert into instalada_em values (2302, 'Ducati', 'Anibal');
@@ -114,3 +104,36 @@ insert into retalhista values (10, "Johnny Boy");
 insert into retalhista values (20, "Xalom");
 insert into retalhista values (30, "Nunca da push");
 insert into retalhista values (40, "Carol");
+
+insert into planograma values (1234567890123,1,5601,'McLaren',3,10,'cba')
+insert into planograma values (1234567890123,1,3402,'Ferrari',3,10,'123')
+insert into planograma values (1234567890123,1,1201,'Yamaha',3,20,'cba')
+insert into planograma values (1234567890123,1,2302,'Ducati',3,20,'321')
+insert into planograma values (1234567890124,1,5601,'McLaren',3,20,'321')
+insert into planograma values (1234567890124,1,2302,'Ducati',3,10,'321')
+insert into planograma values (1234567890124,1,3402,'Ferrari',3,5,'123')
+insert into planograma values (1234567890124,1,1201,'Yamaha',3,15,'123')
+insert into planograma values (1234567890125,1,1201,'Yamaha',3,5,'cba')
+insert into planograma values (1234567890125,1,3402,'Ferrari',3,15,'abc')
+insert into planograma values (1234567890125,1,2301,'Ducati',3,20,'abc')
+insert into planograma values (1234567890125,1,2302,'Ducati',3,10,'abc')
+insert into planograma values (1234567890126,2,2302,'Ducati',3,15,'321')
+insert into planograma values (1234567890126,3,3402,'Ferrari',3,10,'abc')
+insert into planograma values (1234567890127,2,1202,'Yamaha',3,5,'abc')
+insert into planograma values (1234567890127,2,2302,'Ducati',3,5,'abc')
+insert into planograma values (1234567890128,3,3402,'Ferrari',3,5,'123')
+insert into planograma values (1234567890128,2,1202,'Yamaha',3,20,'abc')
+insert into planograma values (1234567890129,2,2302,'Ducati',3,10,'321')
+insert into planograma values (1234567890129,3,3402,'Ferrari',3,20,'cba')
+insert into planograma values (1234567890130,2,3401,'Ferrari',3,20,'abc')
+insert into planograma values (1234567890131,2,3402,'Ferrari',3,10,'321')
+insert into planograma values (1234567890133,1,3401,'Ferrari',3,10,'abc')
+insert into planograma values (1234567890133,2,4501,'KTM',3,15,'cba')
+insert into planograma values (1234567890134,2,5601,'McLaren',3,5,'321')
+insert into planograma values (1234567890134,2,4501,'KTM',3,10,'321')
+insert into planograma values (1234567890135,1,4501,'KTM',3,15,'123')
+insert into planograma values (1234567890136,1,4501,'KTM',3,20,'321')
+insert into planograma values (1234567890137,3,3401,'Ferrari',3,10,'321')
+insert into planograma values (1234567890137,2,1201,'Yamaha',3,20,'cba')
+insert into planograma values (1234567890138,3,1201,'Yamaha',3,10,'abc')
+insert into planograma values (1234567890138,2,1201,'Yamaha',3,10,'cba')
