@@ -52,10 +52,10 @@ def see_ivm_replenishment_events():
 
 # Exerc 4 #################################################
 
-@app.route('/replenishment_events')
-def choose_ivm():
+@app.route('/cat_sub_cats')
+def choose_super_categ():
     try:
-        return render_template("replenishmentIVM.html", params=request.args)
+        return render_template("cat_sub_catsIVM.html", params=request.args)
     except Exception as e:
         return str(e)
 
