@@ -23,6 +23,7 @@ def main_page():
         return str(e) #Renders a page with the error.
 
 
+# Exerc 3 #################################################
 
 @app.route('/replenishment_events')
 def choose_ivm():
@@ -48,6 +49,15 @@ def see_ivm_replenishment_events():
         dbConn.commit()
         cursor.close()
         dbConn.close()
+
+# Exerc 4 #################################################
+
+@app.route('/replenishment_events')
+def choose_ivm():
+    try:
+        return render_template("replenishmentIVM.html", params=request.args)
+    except Exception as e:
+        return str(e)
 
 
 CGIHandler().run(app)
