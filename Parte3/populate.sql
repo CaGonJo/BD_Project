@@ -36,31 +36,6 @@ insert into tem_outra values ('Doce','Bolacha');
 insert into tem_outra values ('Salgado','Batatas fritas');
 insert into tem_outra values ('Salgado','Sandes');
 
-
-insert into produto values (1234567890123, 'Bolo de Cafe', 'Bolo');
-insert into produto values (1234567890124, 'Bolo de Laranja', 'Bolo');
-insert into produto values (1234567890125, 'Waffle', 'Bolo');
-insert into produto values (1234567890126, 'Fanta', 'Refrigerante');
-insert into produto values (1234567890127, 'Coca-Cola', 'Refrigerante');
-insert into produto values (1234567890128, 'Powerade', 'Refrigerante');
-insert into produto values (1234567890129, 'RedBull', 'Refrigerante');
-insert into produto values (1234567890130, 'Luso', 'Agua');
-insert into produto values (1234567890131, 'Vitalis', 'Agua');
-insert into produto values (1234567890132, 'Cafe', 'Bebida');
-insert into produto values (1234567890133, 'Tuc', 'Bolacha');
-insert into produto values (1234567890134, 'Bolacha Maria', 'Bolacha');
-insert into produto values (1234567890135, 'Maca', 'Fruta');
-insert into produto values (1234567890136, 'Banana', 'Fruta');
-insert into produto values (1234567890137, 'Batatas Lays', 'Salgado');
-insert into produto values (1234567890138, 'Batatas Pala-Pala', 'Salgado');
-insert into produto values (1234567890139, 'Pedras Limao', 'Agua');
-insert into produto values (1234567890140, 'Sandes Mista', 'Sandes');
-insert into produto values (1234567890141, 'Chips Ahoy', 'Bolacha');
-insert into produto values (1234567890142, 'Sandes de atum', 'Sandes');
-insert into produto values (1234567890143, 'Hot Dog', 'Sandes');
-insert into produto values (1234567890144, 'Rissol de camarao', 'Salgado');
-insert into produto values (1234567890145, 'Croquete', 'Salgado');
-
 insert into IVM values (1201, 'Yamaha');
 insert into IVM values (1202, 'Yamaha');
 insert into IVM values (2301, 'Ducati');

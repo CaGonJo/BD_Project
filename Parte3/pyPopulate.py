@@ -1,6 +1,8 @@
 import numpy as np
 import random as ra
 
+OG = 10**3 
+
 
 ###########
 # CLASSES #
@@ -18,7 +20,7 @@ class Produto:
         self.descr,self.cat)
 
     def sqlStr(self):
-        return ("insert into produto values "+str(self)+"\n")
+        return ("insert into produto values "+str(self)+";\n")
 
 class IVM:
 
@@ -31,7 +33,7 @@ class IVM:
         self.fabricante)
 
     def sqlStr(self):
-        return "insert into IVM values "+str(self)+"\n"
+        return "insert into IVM values "+str(self)+";\n"
 
 class Prateleira:
 
@@ -48,7 +50,7 @@ class Prateleira:
         self.num_serie,self.fabricante,self.altura, self.nome)
 
     def sqlStr(self):
-        return "insert into prateleira values "+str(self)+"\n"
+        return "insert into prateleira values "+str(self)+";\n"
 
 class Categoria:
 
@@ -59,7 +61,7 @@ class Categoria:
         return "(\'{}\')".format(self.nome)
 
     def sqlStr(self):
-        return "insert into categoria values "+str(self)+"\n"
+        return "insert into categoria values "+str(self)+";\n"
 
 class Planograma:
 
@@ -78,7 +80,7 @@ class Planograma:
         self.nro,self.num_serie,self.fabricante,self.faces, self.unidades, self.loc )
 
     def sqlStr(self):
-        return "insert into planograma values "+str(self)+"\n"
+        return "insert into planograma values "+str(self)+";\n"
 
 class Retailer:
 
@@ -90,7 +92,7 @@ class Retailer:
         return "({},\'{}\')".format(self.tin,self.nome )
 
     def sqlStr(self):
-        return "insert into retalhista values "+str(self)+"\n"
+        return "insert into retalhista values "+str(self)+";\n"
 
 
 class Responsavel:
@@ -106,7 +108,7 @@ class Responsavel:
         self.num_serie,self.fabricante)
 
     def sqlStr(self):
-        return "insert into responsavel_por values "+str(self)+"\n"
+        return "insert into responsavel_por values "+str(self)+";\n"
 
 class Ponto_de_retalho:
 
@@ -119,7 +121,7 @@ class Ponto_de_retalho:
         return "(\'{}\',\'{}\',\'{}\')".format(self.nome,self.distrito,self.concelho)
 
     def sqlStr(self):
-        return "insert into ponto_de_retalho values "+str(self)+"\n"
+        return "insert into ponto_de_retalho values "+str(self)+";\n"
 
 class Instalada:
 
@@ -129,10 +131,10 @@ class Instalada:
         self.nome = nome
 
     def __str__(self):
-        return "({},{},\'{}\')".format(self.num_serie,self.fabricante,self.nome)
+        return "({},\'{}\',\'{}\')".format(self.num_serie,self.fabricante,self.nome)
 
     def sqlStr(self):
-        return "insert into instalada_em values "+str(self)+"\n"
+        return "insert into instalada_em values "+str(self)+";\n"
 
 class Replenishment_Event:
 
@@ -151,7 +153,7 @@ class Replenishment_Event:
         self.fabricante,self.instante,self.unidades,self.tin)
 
     def sqlStr(self):
-        return "insert into evento_reposicao values "+str(self)+"\n"
+        return "insert into evento_reposicao values "+str(self)+";\n"
 
 
 ###########
@@ -181,7 +183,7 @@ def get_prateleira_list_from_sql_tuples(tupls):
 def get_categ_list_from_sql_tuples(tupls):
     categs = []
     for t in tupls:
-        categs += [Categoria(t[0])]
+        categs += [Categoria(t)]
     return categs
 
 def get_retailer_list_from_sql_tuples(tupls):
@@ -220,13 +222,15 @@ def get_prateleiras_refors(ivms,super_categs,simple_categs,retailers):
 def get_replenishment_events(planograms,refors):
     repevs = []
     num_planograms,num_refors = len(planograms), len(refors)
-    for i in range(150000):
+    dates = generate_dates()
+    size = len(dates)
+    for i in range(size):
         planogram = planograms[(10*(1010+i))%num_planograms] #pick a planogram
         chosen_tin = planogram.responsavel.tin
         unitss = ra.randint(5,planogram.unidades)
         repevs += [
             Replenishment_Event(planogram.ean,planogram.nro,planogram.num_serie,
-            planogram.fabricante,i,unitss,chosen_tin)
+            planogram.fabricante,dates[i],unitss,chosen_tin)
         ]
     return repevs
 
@@ -273,17 +277,39 @@ def get_instalada_em(ivms,prets):
 
 # GENERATES #
 
+def generate_dates():
+    dates=[]
+    horas = list(range(24))
+    meses = list(range(1,13))
+    dias = list(range(1,29))
+    inst_by_year = (12*28*24)
+    years_delta = int(np.ceil(OG/inst_by_year))
+    anos = list(range(2020,2020+years_delta))
+    for a in anos:
+        for m in meses:
+            for d in dias:
+                for h in horas:
+                    dates += [
+                        '{}-{}-{} {}:00:00'.format(a,str(m).zfill(2),str(d).zfill(2),str(h).zfill(2))
+                    ]
+    return dates
+    
+
+
+    
+
 def generate_salgados(start_ean):
     #Fritos
     fritos = []
-    for i in range(17000):
+    range_num = round((1.2*OG)/6)
+    for i in range(range_num):
         fritos += [
             Produto(start_ean,'Fritos_{}'.format(str(i).zfill(5)),'Fritos')
         ]
         start_ean+=1
     #Sandes
     sandes = []
-    for i in range(17000):
+    for i in range(range_num):
         sandes += [
             Produto(start_ean,'Sandes_{}'.format(str(i).zfill(5)),'Sandes')
         ]
@@ -293,21 +319,22 @@ def generate_salgados(start_ean):
 def generate_bebidas(start_ean):
     #Aguas
     bebidas = []
-    for i in range(12000):
+    range_num = round((1.2*OG)/9)
+    for i in range(range_num):
         bebidas += [
             Produto(start_ean,'Agua_{}'.format(str(i).zfill(5)),'Aguas')
         ]
         start_ean+=1
     #Iogurtes
     iog = []
-    for i in range(12000):
+    for i in range(range_num):
         bebidas += [
             Produto(start_ean,'Iogurte_{}'.format(str(i).zfill(5)),'Iogurtes')
         ]
         start_ean+=1
     #Rerigerantes
     refri = []
-    for i in range(12000):
+    for i in range(range_num):
         bebidas += [
             Produto(start_ean,'Refrigerante_{}'.format(str(i).zfill(5)),'Refrigerantes')
         ]
@@ -318,19 +345,20 @@ def generate_bebidas(start_ean):
 def generate_doces(start_ean):
     #Bolos
     doces=[]
-    for i in range(12000):
+    range_num = round((1.2*OG)/9)
+    for i in range(range_num):
         doces += [
             Produto(start_ean,'Bolo_{}'.format(str(i).zfill(5)),'Bolos')
         ]
         start_ean+=1
     #Bolachas
-    for i in range(12000):
+    for i in range(range_num):
         doces += [
             Produto(start_ean,'Bolacha_{}'.format(str(i).zfill(5)),'Bolachas')
         ]
         start_ean+=1
     #Fruta
-    for i in range(12000):
+    for i in range(range_num):
         doces += [
             Produto(start_ean,'Fruta_{}'.format(str(i).zfill(5)),'Frutas')
         ]
@@ -344,9 +372,10 @@ def generate_products():
 
 def generate_ivms():
     ivms = []
-    fabric_ivms = 100
+    fabric_ivms = 10
     start = 501234
-    for i in range(1012):
+    range_num = round((1.1*OG)/10)
+    for i in range(range_num):
         for n in range(fabric_ivms):
             ivms += [
                 IVM(start,'Fabr_{}'.format(str(i).zfill(6)))
@@ -357,7 +386,8 @@ def generate_ivms():
 def generate_retailers():
     i = 1
     rets = []
-    for i in range(110000):
+    range_num = round(1.1*OG)
+    for i in range(range_num):
         rets += [
             Retailer(i,'Ret_{}'.format(str(i).zfill(6)))
         ]
@@ -367,7 +397,8 @@ def generate_retailers():
 def generate_ponto_de_retalho():
     i = 1
     prets = []
-    for i in range(130000):
+    range_num = round(1.3*OG)
+    for i in range(range_num):
         c = ra.randint(0,9)
         d = ra.randint(0,9)
         prets += [
@@ -387,21 +418,21 @@ def insert_str_categ(categs):
 def insert_str_tem_categoria(prods):
     out = ""
     for produto in prods:
-        out+="insert into tem_categoria values ({},\'{}\')\n".format(produto.ean,produto.cat)
+        out+="insert into tem_categoria values ({},\'{}\');\n".format(produto.ean,produto.cat)
     return out
 
 def insert_str_simple_categ(simple_categ):
     out = ""
     simple_categs = list(simple_categ.keys())
     for categ in simple_categs:
-        out+="insert into categoria_simples values (\'{}\')\n".format(categ)
+        out+="insert into categoria_simples values (\'{}\');\n".format(categ)
     return out
 
 def insert_str_super_categ(super_categ):
     out = ""
     super_categs = list(super_categ.keys())
     for categ in super_categs:
-        out+="insert into super_categoria values (\'{}\')\n".format(categ)
+        out+="insert into super_categoria values (\'{}\');\n".format(categ)
     return out
 
 def insert_str_tem_outra(super_categ):
@@ -409,7 +440,7 @@ def insert_str_tem_outra(super_categ):
     super_categs = list(super_categ.keys())
     for categ in super_categs:
         for simple_categ in super_categ[categ]:
-            out+="insert into tem_outra values (\'{}\',\'{}\')\n".format(categ,simple_categ)
+            out+="insert into tem_outra values (\'{}\',\'{}\');\n".format(categ,simple_categ)
     return out
 
 def insert_str_Base(Base_list):
@@ -456,6 +487,13 @@ Simple_Categs = {
 #######
 # RUN #
 #######
+
+dates = generate_dates()
+for date in dates:
+    print(date)
+
+print(len(dates))
+
 
 PyCategs = get_categ_list_from_sql_tuples(Categs)
 PyProdutos = generate_products()
