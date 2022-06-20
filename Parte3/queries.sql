@@ -12,7 +12,7 @@ FROM t
 WHERE t.contagem = (
     SELECT MAX(t.contagem)
     FROM t
-    )
+    );
 
 --Qual o nome do ou dos retalhistas que são responsáveis por todas as categorias simples?
 
@@ -22,13 +22,13 @@ WHERE tin = ALL (
     SELECT tin
     FROM rp
     WHERE nome_cat IN categoria_simples.nome
-)
+);
 
 --Quais os produtos (ean) que nunca foram repostos?
 
 SELECT ean
 FROM produto
-WHERE produto.ean NOT IN planograma.ean
+WHERE ean NOT IN (SELECT ean FROM planograma);
 
 -- Quais os produtos (ean) que foram repostos sempre pelo mesmo retalhista?
 
@@ -37,4 +37,4 @@ FROM (
     SELECT ean, COUNT(DISTINCT(tin)) as contagem
     FROM evento_reposicao
 )
-WHERE contagem == 1
+WHERE contagem == 1;
