@@ -1,0 +1,15 @@
+WITH t1 AS (
+        SELECT *
+        FROM evento_reposicao
+        WHERE num_serie={}
+), t2 AS (
+        SELECT p.cat,t1.unidades
+        FROM t1
+        INNER JOIN produto AS p
+        ON t1.ean=p.ean
+)
+
+
+SELECT SUM(unidades) AS unidades_repostas, cat AS categoria
+FROM t2
+GROUP BY cat

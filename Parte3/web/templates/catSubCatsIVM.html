@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title> Get Category Sub-Categories </title>
+</head>
+<body>
+    <h3> See Category Sub-Categories </h3>
+    <form action="see_cat_sub_cats" method="post">
+        <p>Categ Name: <input type="text" name="categ_name" > </p>
+        <p><input type="submit" value="Submit" > </p>
+    </form>  
+    {% if cursor %}
+        <h4>Categorias</h4>
+        <table border="2px">
+            <thead>
+                {% for record in cursor %}
+                <tr>
+                    <th>{{ record[0] }} </th>
+                </tr>
+                {% endfor %}
+            </thead>
+        </table>
+    {% else %}
+        <p> Erro: não foi possível obter dados da base de dados! </p>
+    {% endif %}
+    <p></p>
+    <table border="10px" style="padding:10px">
+        <thead>
+            <tr>
+                <th >
+                    <a href="../appIVM.cgi/">Go Back</a>
+                </th>
+            </tr>
+        </thead>
+    </table>
+</body>
+</html>
