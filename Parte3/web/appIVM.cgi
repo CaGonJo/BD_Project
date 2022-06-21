@@ -101,7 +101,10 @@ def see_cat_sub_cats():
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
         categoria=request.form["categ_name"]
-        query = 'select nome from categoria'
+        query_file_pre = os.path.join(basedir, "queries/QD.txt")
+        query_file = open(query_file_pre,"r")
+        query = query_file.read().format(categoria)
+        query_file.close()
         cursor.execute(query)
         return render_template("seeCatSubCats.html", cursor=cursor, params=request.form)
     except Exception as e:
