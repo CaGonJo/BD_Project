@@ -1,7 +1,7 @@
 WITH RECURSIVE t1 AS (
 	SELECT  cat
 	FROM tem_outra
-	WHERE super_cat='{}'
+	WHERE super_cat='%s'
 
 	UNION ALL
 

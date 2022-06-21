@@ -30,10 +30,23 @@ def main_page():
 
 @app.route('/replenishment_events')
 def choose_ivm():
+    dbConn=None
+    cursor=None
     try:
-        return render_template("replenishmentIVM.html", params=request.args)
+        dbConn = psycopg2.connect(DB_CONNECTION_STRING)
+        cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
+        query_file_pre = os.path.join(basedir, "queries/getHighReplIVM.txt")
+        query_file = open(query_file_pre,"r")
+        query = query_file.read()
+        query_file.close()
+        cursor.execute(query)
+        return render_template("replenishmentIVM.html", cursor=cursor, params=request.args)
     except Exception as e:
         return str(e)
+    finally:
+        dbConn.commit()
+        cursor.close()
+        dbConn.close()
 
 @app.route('/see_ivm_repl_evs', methods=["POST"])
 def see_ivm_replenishment_events():
@@ -42,9 +55,9 @@ def see_ivm_replenishment_events():
     try:
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        ivm_num_serie=int(request.form["num_serie"])
-        query = 'select * from evento_reposicao where num_serie={}'.format(ivm_num_serie)
-        cursor.execute(query)
+        query = 'select * from evento_reposicao where num_serie=%s'
+        data=(request.form["num_serie"],)
+        cursor.execute(query,data)
         return render_template("seeIVMRepEv.html", cursor=cursor, params=request.form)
     except Exception as e:
         return str(e)
@@ -60,12 +73,12 @@ def see_repl_by_categ():
     try:
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        ivm_num_serie=int(request.args["num_serie"])
         query_file_pre = os.path.join(basedir, "queries/QC2.txt")
         query_file = open(query_file_pre,"r")
-        query = query_file.read().format(ivm_num_serie)
+        query = query_file.read()
         query_file.close()
-        cursor.execute(query)
+        data=(request.form["num_serie"],)
+        cursor.execute(query,data)
         return render_template("seeRepByCateg.html", cursor=cursor)
     except Exception as e:
         return str(e)
@@ -100,12 +113,12 @@ def see_cat_sub_cats():
     try:
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        categoria=request.form["categ_name"]
         query_file_pre = os.path.join(basedir, "queries/QD.txt")
         query_file = open(query_file_pre,"r")
-        query = query_file.read().format(categoria)
+        query = query_file.read()
         query_file.close()
-        cursor.execute(query)
+        data=(request.form["categ_name"],)
+        cursor.execute(query,data)
         return render_template("seeCatSubCats.html", cursor=cursor, params=request.form)
     except Exception as e:
         return str(e)

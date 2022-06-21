@@ -11,6 +11,26 @@
         <p><input type="submit" value="Submit" > </p>
     </form>  
 
+    {% if cursor %}
+    <h4>Alguns exemplos de IVMs</h4>
+    <table border="2px">
+        <thead>
+            <tr>
+                <th>IVMs</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for record in cursor %}
+            <tr>
+                <td>{{ record[0] }} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p> Erro: não foi possível obter dados da base de dados! </p>
+    {% endif %}
+
     <table border="10px" style="padding:10px">
         <thead>
             <tr>
