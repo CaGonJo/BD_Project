@@ -42,10 +42,10 @@ FROM produto
 WHERE ean NOT IN (SELECT ean FROM planograma);
 
 -- Quais os produtos (ean) que foram repostos sempre pelo mesmo retalhista?
-
 SELECT ean
 FROM (
-    SELECT ean, COUNT(DISTINCT(tin)) as contagem
-    FROM evento_reposicao
-)
-WHERE contagem == 1;
+            SELECT ean, COUNT(DISTINCT(tin)) as contagem
+            FROM evento_reposicao
+            GROUP BY ean
+) as t
+WHERE t.contagem = 1;
