@@ -1,0 +1,8 @@
+1. Tem de haver retalhistas responsaveis por todas as categorias simples
+>Categoria Simples:
+>As folhas da árvore das categorias, o resto é tudo super categoria
+
+3. Tem de haver produtos que nunca foram repostos (acho que pode haver)
+
+4. Produtos repostos só por um retalhista
+

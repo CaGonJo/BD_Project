@@ -1,8 +1,15 @@
+import numbers
+from posixpath import split
 import numpy as np
 import random as ra
 
-OG = 10**3 
+OG = 10**4 
 
+"""
+insert into produto values (2345678901234,'Coca-Cola','Refrigerantes')
+insert into produto values (2345678901235,'Batatas Lays','Batatas Fritas')
+insert into produto values (2345678901236,'Manga','Frutas Verao')
+"""
 
 ###########
 # CLASSES #
@@ -54,14 +61,15 @@ class Prateleira:
 
 class Categoria:
 
-    def __init__(self,nome):
+    def __init__(self,nome,tipo):
         self.nome = nome
+        self.tipo = tipo
 
     def __str__(self):
         return "(\'{}\')".format(self.nome)
 
     def sqlStr(self):
-        return "insert into categoria values "+str(self)+";\n"
+        return "insert into {} values ".format(self.tipo)+str(self)+";\n"
 
 class Planograma:
 
@@ -162,47 +170,58 @@ class Replenishment_Event:
 
 # GETS #
 
-def get_produto_list_from_sql_tuples(tupls):
-    products = []
-    for t in tupls:
-        products += [Produto(t[0],t[1],t[2])]
-    return products
+def get_categ_sub_categs(categ_name):
+    subs = []
+    keys = (Super_Categs.keys())
+    if categ_name in keys:
+        subs += Super_Categs[categ_name]
+        for el in Super_Categs[categ_name]:
+            subs += get_categ_sub_categs(el)
+    return subs
 
-def get_ivm_list_from_sql_tuples(tupls):
-    ivms = []
-    for t in tupls:
-        ivms += [IVM(t[0],t[1])]
-    return ivms
+def get_product_abrev(categ_name):
+    splitName = categ_name.split(" ")
+    split_size = len(splitName)
+    addStr=''
+    i=0
+    while i<split_size:
+        addStr = addStr+splitName[i] if i==0 else addStr+splitName[i][:(min(5,len(splitName[i])))].capitalize()
+        i+=1
+    return addStr
 
-def get_prateleira_list_from_sql_tuples(tupls):
-    ptls = []
-    for t in tupls:
-        ptls += [Prateleira(t[0],t[1],t[2],t[3],t[4])]
-    return ptls
+def get_categorias(super_categs):
+    pyCategs = []
+    supers = list(super_categs.keys())
+    subs = list(super_categs.values())
+    subs_flat = [item for sublist in subs for item in sublist]
+    all_categs = list(set(subs_flat+supers))
+    for categ in all_categs:
+        pyCategs += [
+            Categoria(categ,'categoria')
+        ]
+    return pyCategs, all_categs
 
-def get_categ_list_from_sql_tuples(tupls):
-    categs = []
-    for t in tupls:
-        categs += [Categoria(t)]
-    return categs
-
-def get_retailer_list_from_sql_tuples(tupls):
-    rets = []
-    for t in tupls:
-        rets += [Retailer(t[0],t[1])]
-    return rets
+def get_categorias_simples(super_categs,categs_str):
+    simple_cats = []
+    supers = list(super_categs.keys())
+    simp_categs_str = [ categ for categ in categs_str if categ not in supers]
+    for sc in simp_categs_str:
+        simple_cats += [
+            Categoria(sc,'categoria_simples')
+        ]
+    return simple_cats
 
 
 
 
-def get_prateleiras_refors(ivms,super_categs,simple_categs,retailers):
+def get_prateleiras_refors(ivms,super_categs,retailers):
     heights = [10,15,20]
     prats,refors=[],[]
     retailers_num = len(retailers)
     for ivm in ivms:
         num_prats = ra.randint(3,5)
-        ivm_categ = list(super_categs.keys())[ra.randint(0,2)]
-        ivm_sub_categs = super_categs[ivm_categ]
+        ivm_categ = list(super_categs.keys())[ra.randint(0,(len(super_categs.keys())-1))]
+        ivm_sub_categs = get_categ_sub_categs(ivm_categ)
         num_categs = len(ivm_sub_categs)
         #Responsible For
         retailer = retailers[ra.randint(0,(retailers_num-1))]
@@ -293,81 +312,23 @@ def generate_dates():
                         '{}-{}-{} {}:00:00'.format(a,str(m).zfill(2),str(d).zfill(2),str(h).zfill(2))
                     ]
     return dates
-    
 
 
-    
-
-def generate_salgados(start_ean):
-    #Fritos
-    fritos = []
-    range_num = round((1.2*OG)/6)
-    for i in range(range_num):
-        fritos += [
-            Produto(start_ean,'Fritos_{}'.format(str(i).zfill(5)),'Fritos')
-        ]
-        start_ean+=1
-    #Sandes
-    sandes = []
-    for i in range(range_num):
-        sandes += [
-            Produto(start_ean,'Sandes_{}'.format(str(i).zfill(5)),'Sandes')
-        ]
-        start_ean+=1
-    return fritos + sandes
-
-def generate_bebidas(start_ean):
-    #Aguas
-    bebidas = []
-    range_num = round((1.2*OG)/9)
-    for i in range(range_num):
-        bebidas += [
-            Produto(start_ean,'Agua_{}'.format(str(i).zfill(5)),'Aguas')
-        ]
-        start_ean+=1
-    #Iogurtes
-    iog = []
-    for i in range(range_num):
-        bebidas += [
-            Produto(start_ean,'Iogurte_{}'.format(str(i).zfill(5)),'Iogurtes')
-        ]
-        start_ean+=1
-    #Rerigerantes
-    refri = []
-    for i in range(range_num):
-        bebidas += [
-            Produto(start_ean,'Refrigerante_{}'.format(str(i).zfill(5)),'Refrigerantes')
-        ]
-        start_ean+=1
-    return (bebidas + [Produto(start_ean,'Coca-Cola','Refrigerantes')])
-
-
-def generate_doces(start_ean):
-    #Bolos
-    doces=[]
-    range_num = round((1.2*OG)/9)
-    for i in range(range_num):
-        doces += [
-            Produto(start_ean,'Bolo_{}'.format(str(i).zfill(5)),'Bolos')
-        ]
-        start_ean+=1
-    #Bolachas
-    for i in range(range_num):
-        doces += [
-            Produto(start_ean,'Bolacha_{}'.format(str(i).zfill(5)),'Bolachas')
-        ]
-        start_ean+=1
-    #Fruta
-    for i in range(range_num):
-        doces += [
-            Produto(start_ean,'Fruta_{}'.format(str(i).zfill(5)),'Frutas')
-        ]
-        start_ean+=1
-    return doces
-
-
-def generate_products():
-    return generate_salgados(1234567890123) + generate_doces(2345678901234) + generate_bebidas(3456789012345)
+def generate_produtos(simple_categs):
+    produtos = []
+    start_ean = 1234567890123
+    categ_numb = len(simple_categs)
+    prods_per_categ = round((OG*2)/categ_numb)
+    numbers_needed = len(str(prods_per_categ))
+    for categ in simple_categs:
+        abrev_name = get_product_abrev(categ.nome)
+        i=0
+        for i in range(prods_per_categ):
+            produtos+=[
+                Produto(start_ean,abrev_name+'_'+str(i).zfill(numbers_needed),categ.nome)
+            ]
+            start_ean+=1
+    return produtos
 
 
 def generate_ivms():
@@ -375,10 +336,11 @@ def generate_ivms():
     fabric_ivms = 10
     start = 501234
     range_num = round((1.1*OG)/10)
+    numbers_needed = len(str(range_num))
     for i in range(range_num):
         for n in range(fabric_ivms):
             ivms += [
-                IVM(start,'Fabr_{}'.format(str(i).zfill(6)))
+                IVM(start,'Fabr_{}'.format(str(i).zfill(numbers_needed)))
             ]
             start += 1
     return ivms  
@@ -387,9 +349,10 @@ def generate_retailers():
     i = 1
     rets = []
     range_num = round(1.1*OG)
+    numbers_needed = len(str(range_num))
     for i in range(range_num):
         rets += [
-            Retailer(i,'Ret_{}'.format(str(i).zfill(6)))
+            Retailer(i,'Ret_{}'.format(str(i).zfill(numbers_needed)))
         ]
         i += 1
     return rets
@@ -409,23 +372,11 @@ def generate_ponto_de_retalho():
 
 # INSERT STR #
 
-def insert_str_categ(categs):
-    out = ""
-    for categ in categs:
-        out+=categ.sqlStr()
-    return out
 
 def insert_str_tem_categoria(prods):
     out = ""
     for produto in prods:
         out+="insert into tem_categoria values ({},\'{}\');\n".format(produto.ean,produto.cat)
-    return out
-
-def insert_str_simple_categ(simple_categ):
-    out = ""
-    simple_categs = list(simple_categ.keys())
-    for categ in simple_categs:
-        out+="insert into categoria_simples values (\'{}\');\n".format(categ)
     return out
 
 def insert_str_super_categ(super_categ):
@@ -455,55 +406,37 @@ def insert_str_Base(Base_list):
 # DATA #
 ########
 
-
-Categs= ['Bolos',
-'Iogurtes',
-'Salgados',
-'Refrigerantes',
-'Aguas',
-'Bolachas',
-'Frutas',
-'Doces',
-'Bebidas',
-'Sandes',
-'Fritos']
-
 Super_Categs = {'Doces':['Bolos','Bolachas','Frutas'],
-'Bebidas':['Aguas','Iogurtes','Refrigerantes'],
-'Salgados':['Fritos','Sandes']}
-
-Simple_Categs = {
-    'Bolos':'Doces',
-    'Bolachas':'Doces',
-    'Frutas':'Doces',
-    'Aguas':'Bebidas',
-    'Iogurtes':'Bebidas',
-    'Refrigerantes':'Bebidas',
-    'Fritos':'Salgados',
-    'Sandes':'Salgados'
-}
+'Bebidas':['Aguas','Iogurtes','Sumos'],
+'Salgados':['Fritos','Sandes'],
+'Frutas':['Frutas Verao','Frutas Inverno'],
+'Iogurtes':['Iogurtes Vegan','Iogurtes Leite'],
+'Sumos':['Refrigerantes','Sumos Fruta'],
+'Fritos':['Fritos Caseiros','Fritos pacote'],
+'Fritos pacote':['Batatas fritas','Tiras milho','Frutos secos'],
+'Iogurtes Vegan':['Iogurte Soja','Iogurte Aveia','Iogurte Amendoa']}
 
 
 #######
 # RUN #
 #######
 
-dates = generate_dates()
-for date in dates:
-    print(date)
-
-print(len(dates))
 
 
-PyCategs = get_categ_list_from_sql_tuples(Categs)
-PyProdutos = generate_products()
+
+PyCategs, Categs_Str = get_categorias(Super_Categs)
+PySimpCategs = get_categorias_simples(Super_Categs,Categs_Str)
+
+
+
+PyProdutos = generate_produtos(PySimpCategs)
 PyIVMs = generate_ivms()
 print("Done quarter Pys")
 PyPtRet = generate_ponto_de_retalho()
 PyInstalled = get_instalada_em(PyIVMs,PyPtRet)
 print("Done half Pys")
 PyRetailers = generate_retailers()
-PyPtls, PyReFors = get_prateleiras_refors(PyIVMs,Super_Categs,Simple_Categs,PyRetailers)
+PyPtls, PyReFors = get_prateleiras_refors(PyIVMs,Super_Categs,PyRetailers)
 print("Done 3 quarters Pys")
 PyPlanograms = get_planograms(PyProdutos,PyIVMs,PyPtls,PyCategs)
 PyRepEvs = get_replenishment_events(PyPlanograms,PyReFors)
@@ -513,12 +446,12 @@ print("Done Pys")
 file1 = open('populate2.sql', 'w')
 
 #categoria
-categ_str = insert_str_categ(PyCategs)
+categ_str = insert_str_Base(PyCategs)
 file1.writelines(categ_str)
 file1.write("\n\n")
 
 #categoria simples
-categ_simples_str = insert_str_simple_categ(Simple_Categs)
+categ_simples_str = insert_str_Base(PySimpCategs)
 file1.writelines(categ_simples_str)
 file1.write("\n\n")
 
