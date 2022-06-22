@@ -1,9 +1,10 @@
 import numbers
+from pickle import TRUE
 from posixpath import split
 import numpy as np
 import random as ra
 
-OG = 10**4 
+OG = max(200,10**3)
 
 """
 insert into produto values (2345678901234,'Coca-Cola','Refrigerantes')
@@ -168,6 +169,18 @@ class Replenishment_Event:
 # FUNCOES #
 ###########
 
+# GENERAL #
+
+def product_categ_is_good(prat_cat,prod_cat):
+    """
+    Verifica se o produto pode pertence a prateleira com base na categoria
+    """
+    if prat_cat==prod_cat:
+        return True
+    else: 
+        sons_categ = get_categ_sub_categs(prat_cat)
+        return prod_cat in sons_categ
+
 # GETS #
 
 def get_categ_sub_categs(categ_name):
@@ -267,7 +280,7 @@ def get_planograms(prods,ivms,ptls,categs):
         p=(i*373)
         while len(good_prats)<15:
             prateleira = ptls[p%num_prats]
-            if prateleira.nome == product.cat:
+            if product_categ_is_good(prateleira.nome,product.cat):
                 good_prats += [prateleira]
             p+=1
         usable_prats = np.random.choice(good_prats, size=round(len(good_prats)*0.6), replace=False)
@@ -348,7 +361,7 @@ def generate_ivms():
 def generate_retailers():
     i = 1
     rets = []
-    range_num = round(1.1*OG)
+    range_num = round(0.1*OG) #Less retailers, so one retailer has more ivms
     numbers_needed = len(str(range_num))
     for i in range(range_num):
         rets += [

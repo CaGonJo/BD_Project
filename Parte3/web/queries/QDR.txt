@@ -1,0 +1,15 @@
+WITH RECURSIVE t1 AS (
+	SELECT  super_cat
+	FROM tem_outra2
+	WHERE cat=%s
+
+	UNION ALL
+
+	SELECT t2.super_cat
+	FROM t1
+	JOIN tem_outra2 AS t2
+	ON t2.cat=t1.super_cat
+)
+
+SELECT * 
+FROM t1
