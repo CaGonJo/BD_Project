@@ -21,6 +21,9 @@
         {% endfor %}
         </tbody>
     </table>
+{% else %}
+    <p> Erro: não foi possível obter dados da base de dados! </p>
+{% endif %}
     <p></p>
     <table border="10px" style="padding:10px">
         <thead>
@@ -31,8 +34,5 @@
             </tr>
         </thead>
     </table>
-{% else %}
-    <p> Erro: não foi possível obter dados da base de dados! </p>
-{% endif %}
 </body>
 </html>

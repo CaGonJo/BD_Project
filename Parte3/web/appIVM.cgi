@@ -7,6 +7,8 @@ import psycopg2
 import psycopg2.extras
 import os
 
+from aux_scripts import *
+
 # SGBD configs
 DB_HOST="db.tecnico.ulisboa.pt"
 DB_USER="ist195749"
@@ -24,6 +26,60 @@ def main_page():
         return render_template("indexIVM.html")
     except Exception as e:
         return str(e) #Renders a page with the error.
+
+
+# Exerc 1 #################################################
+
+@app.route('/remove_insert_categ')
+def remove_insert_categ_page():
+    try:
+        return render_template("removeInsertCateg.html")
+    except Exception as e:
+        return str(e) 
+
+@app.route('/get_remove_categ')
+def remove_categ_page():
+    try:
+        return render_template("getRemoveCateg.html")
+    except Exception as e:
+        return str(e)
+
+@app.route('/get_insert_categ')
+def insert_categ_page():
+    dbConn=None
+    cursor=None
+    try:
+        dbConn = psycopg2.connect(DB_CONNECTION_STRING)
+        cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
+        query = 'select nome from categoria2'
+        cursor.execute(query)
+        return render_template("getInsertCateg.html",cursor=cursor,params=request.args)
+    except Exception as e:
+        return str(e)
+    finally:
+        dbConn.commit()
+        cursor.close()
+        dbConn.close()
+
+@app.route('/insert_categ', methods=["POST"])
+def insert_categ():
+    dbConn=None
+    cursor=None
+    try:
+        dbConn = psycopg2.connect(DB_CONNECTION_STRING)
+        cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
+        query,data,err = get_query_data_new_categ(request.form,dbConn)
+        if (err==-1 or query is None):
+            return render_template("erroSubmition.html")
+        else:
+            cursor.execute(query,data)
+        return render_template("insertCategResult.html", ola=query)
+    except Exception as e:
+        return str(e)
+    finally:
+        dbConn.commit()
+        cursor.close()
+        dbConn.close()
 
 
 # Exerc 3 #################################################
@@ -96,7 +152,7 @@ def choose_super_categ():
     try:
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        query = 'select nome from categoria'
+        query = 'select nome from categoria2'
         cursor.execute(query)
         return render_template("catSubCatsIVM.html",cursor=cursor,params=request.args)
     except Exception as e:

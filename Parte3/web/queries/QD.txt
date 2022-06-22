@@ -1,13 +1,13 @@
 WITH RECURSIVE t1 AS (
 	SELECT  cat
-	FROM tem_outra
-	WHERE super_cat='%s'
+	FROM tem_outra2
+	WHERE super_cat=%s
 
 	UNION ALL
 
 	SELECT t2.cat
 	FROM t1
-	JOIN tem_outra AS t2
+	JOIN tem_outra2 AS t2
 	ON t2.super_cat=t1.cat
 )
 
