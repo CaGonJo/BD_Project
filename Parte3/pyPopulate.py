@@ -6,11 +6,7 @@ import random as ra
 
 OG = max(200,10**3)
 
-"""
-insert into produto values (2345678901234,'Coca-Cola','Refrigerantes')
-insert into produto values (2345678901235,'Batatas Lays','Batatas Fritas')
-insert into produto values (2345678901236,'Manga','Frutas Verao')
-"""
+
 
 ###########
 # CLASSES #
@@ -39,6 +35,12 @@ class IVM:
     def __str__(self):
         return "({},\'{}\')".format(self.num_serie,
         self.fabricante)
+
+    def __eq__(self,other):
+        return self.num_serie==other.num_serie and self.fabricante==other.fabricante
+
+    def __lt__(self,other):
+        return self.num_serie < other.num_serie
 
     def sqlStr(self):
         return "insert into IVM values "+str(self)+";\n"
@@ -99,6 +101,12 @@ class Retailer:
 
     def __str__(self):
         return "({},\'{}\')".format(self.tin,self.nome )
+
+    def __eq__(self,other):
+        return self.tin==other.tin and self.nome==other.nome
+
+    def __lt__(self,other):
+        return self.tin < other.tin
 
     def sqlStr(self):
         return "insert into retalhista values "+str(self)+";\n"
@@ -225,30 +233,64 @@ def get_categorias_simples(super_categs,categs_str):
     return simple_cats
 
 
+def get_luckys(prats,refors,ilucky,rlucky,s_categs,nums):
+    """
+    Serve para ter a certeza que temos retalhistas responsaveis por todas as cat simples
+    """
+    for r in rlucky:
+        print(r.nome,r.tin)
+    heights = [10,15,20]
+    ivm = 0
+    prats2=[]
+    for cat in s_categs:
+        for ret in rlucky:
+            refor = Responsavel(cat.nome,ret.tin,ilucky[ivm].num_serie,ilucky[ivm].fabricante)
+            refors = [refor]
+            num_prats = ra.randint(3,4)
+            for i in range(num_prats):
+                height  = heights[ra.randint(0,2)]
+                prats2 += [
+                    Prateleira((i+1),ilucky[ivm].num_serie,
+                    ilucky[ivm].fabricante,height,cat.nome,refor)
+                ]
+            ivm+=1
+    for prat in prats2:
+        print(prat)
+    
+    return prats+prats2,refors
 
+def get_two_sets(mother_set, size_of_small_set):
+    big_set, small_set = []
+    
 
-def get_prateleiras_refors(ivms,super_categs,retailers):
+def get_prateleiras_refors(pre_ivms,categs,pre_retailers,simple_categs,retailers_simple_all=3):
     heights = [10,15,20]
     prats,refors=[],[]
+    retailers_lucky = list(np.random.choice(pre_retailers,size=retailers_simple_all,replace=False))
+    retailers = list(np.setdiff1d(pre_retailers,retailers_lucky))
     retailers_num = len(retailers)
+    ivms_lucky = list(np.random.choice(pre_ivms,
+    size=(len(simple_categs)*retailers_simple_all),replace=False))
+    ivms = list(np.setdiff1d(pre_ivms,ivms_lucky))
+    print(len(retailers),len(pre_retailers),len(retailers_lucky))
     for ivm in ivms:
         num_prats = ra.randint(3,5)
-        ivm_categ = list(super_categs.keys())[ra.randint(0,(len(super_categs.keys())-1))]
-        ivm_sub_categs = get_categ_sub_categs(ivm_categ)
+        ivm_categ = categs[ra.randint(0,(len(categs)-1))]
+        ivm_sub_categs = get_categ_sub_categs(ivm_categ.nome)
         num_categs = len(ivm_sub_categs)
         #Responsible For
         retailer = retailers[ra.randint(0,(retailers_num-1))]
-        refor = Responsavel(ivm_categ,retailer.tin,ivm.num_serie,
+        refor = Responsavel(ivm_categ.nome,retailer.tin,ivm.num_serie,
             ivm.fabricante)
         refors += [refor]
         #Prateleiras
         for i in range(num_prats):
             height  = heights[ra.randint(0,2)]
-            categ = ivm_sub_categs[(i%num_categs)]
+            categ = ivm_categ.nome if num_categs==0 else ivm_sub_categs[(i%num_categs)]
             prats += [
                 Prateleira((i+1),ivm.num_serie,ivm.fabricante,height,categ,refor)
             ]
-    return prats, refors
+    return get_luckys(prats,refors,ivms_lucky,retailers_lucky,simple_categs,retailers_simple_all)
 
 
 def get_replenishment_events(planograms,refors):
@@ -449,7 +491,7 @@ PyPtRet = generate_ponto_de_retalho()
 PyInstalled = get_instalada_em(PyIVMs,PyPtRet)
 print("Done half Pys")
 PyRetailers = generate_retailers()
-PyPtls, PyReFors = get_prateleiras_refors(PyIVMs,Super_Categs,PyRetailers)
+PyPtls, PyReFors = get_prateleiras_refors(PyIVMs,PyCategs,PyRetailers,PySimpCategs)
 print("Done 3 quarters Pys")
 PyPlanograms = get_planograms(PyProdutos,PyIVMs,PyPtls,PyCategs)
 PyRepEvs = get_replenishment_events(PyPlanograms,PyReFors)
