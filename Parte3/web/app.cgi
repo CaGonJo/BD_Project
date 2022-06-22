@@ -65,7 +65,7 @@ def insert_categ_page():
         dbConn.close()
 
 @app.route('/insert_simple_categ', methods=["POST"])
-def insert_categ():
+def insert_simple_categ():
     dbConn=None
     cursor=None
     try:
@@ -87,7 +87,7 @@ def insert_categ():
         dbConn.close()
 
 @app.route('/insert_super_categ', methods=["POST"])
-def insert_categ():
+def insert_super_categ():
     dbConn=None
     cursor=None
     try:
