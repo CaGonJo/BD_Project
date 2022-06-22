@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title> Get IVM Replenishment Event </title>
+</head>
+<body>
+    <h3> See IVM's Replenishment Events </h3>
+    <form action="see_ivm_repl_evs" method="post">
+        <p>IVM ID: <input type="text" name="num_serie" > </p>
+        <p><input type="submit" value="Submit" > </p>
+    </form>  
+
+    {% if cursor %}
+    <h4>Alguns exemplos de IVMs</h4>
+    <table border="2px">
+        <thead>
+            <tr>
+                <th>IVMs</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for record in cursor %}
+            <tr>
+                <td>{{ record[0] }} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p> Erro: não foi possível obter dados da base de dados! </p>
+    {% endif %}
+
+    <table border="10px" style="padding:10px">
+        <thead>
+            <tr>
+                <th >
+                    <a href="../appIVM.cgi/">Go Back</a>
+                    <!-- É preciso mudar isto-->
+                </th>
+            </tr>
+        </thead>
+    </table>
+</body>
+</html>

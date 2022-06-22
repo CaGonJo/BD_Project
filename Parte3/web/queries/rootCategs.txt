@@ -1,0 +1,6 @@
+SELECT super_cat
+FROM tem_outra AS t
+WHERE t.super_cat NOT IN (
+    SELECT cat FROM tem_outra
+)
+GROUP BY t.super_cat;

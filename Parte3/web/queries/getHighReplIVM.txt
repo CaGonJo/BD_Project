@@ -1,0 +1,16 @@
+WITH t1 AS (
+        SELECT i.num_serie,er.unidades
+        FROM ivm as i
+        INNER JOIN evento_reposicao AS er
+        ON i.num_serie=er.num_serie
+), t2 AS (
+        SELECT COUNT(unidades) AS units,num_serie
+        FROM t1
+        GROUP BY num_serie
+)
+
+
+SELECT num_serie
+FROM t2
+ORDER BY units DESC
+LIMIT 10
