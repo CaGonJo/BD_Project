@@ -23,7 +23,7 @@ app = Flask(__name__)
 @app.route('/')
 def main_page():
     try:
-        return render_template("indexIVM.html")
+        return render_template("index.html")
     except Exception as e:
         return str(e) #Renders a page with the error.
 
@@ -37,7 +37,7 @@ def remove_categ_page():
     try:
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        query = 'select nome from categoria2'
+        query = 'select nome from categoria'
         cursor.execute(query)
         return render_template("getRemoveCateg.html",cursor=cursor)
     except Exception as e:
@@ -54,7 +54,7 @@ def insert_categ_page():
     try:
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        query = 'select nome from categoria2'
+        query = 'select nome from categoria'
         cursor.execute(query)
         return render_template("getInsertCateg.html",cursor=cursor,params=request.args)
     except Exception as e:
@@ -69,18 +69,20 @@ def insert_categ():
     dbConn=None
     cursor=None
     try:
+        success = 1
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
         query,data,err = get_query_data_new_categ(request.form,dbConn)
-        if (err==-1 or query is None):
-            return render_template("erroSubmition.html")
-        else:
-            cursor.execute(query,data)
-        return render_template("insertCategResult.html", ola=query)
+        cursor.execute(query,data)
+        return render_template("success.html")
     except Exception as e:
-        return str(e)
+        success = 0
+        return render_template("error.html",msg_err=e)
     finally:
-        dbConn.commit()
+        if success:
+            cursor.execute("commit;")
+        else: 
+            cursor.execute("rollback;")
         cursor.close()
         dbConn.close()
 
@@ -99,7 +101,7 @@ def remove_categ():
         cursor.execute(query,data)
         return render_template("insertCategResult.html", ola=query)
     except Exception as e:
-        return str(e)
+        return render_template("error.html",msg_err=e)
     finally:
         dbConn.commit()
         cursor.close()
@@ -205,24 +207,6 @@ def see_ivm_replenishment_events():
     try:
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        query = 'select * from evento_reposicao where num_serie=%s'
-        data=(request.form["num_serie"],)
-        cursor.execute(query,data)
-        return render_template("seeIVMRepEv.html", cursor=cursor, params=request.form)
-    except Exception as e:
-        return str(e)
-    finally:
-        dbConn.commit()
-        cursor.close()
-        dbConn.close()
-
-@app.route('/replenishment_by_categ')
-def see_repl_by_categ():
-    dbConn=None
-    cursor=None
-    try:
-        dbConn = psycopg2.connect(DB_CONNECTION_STRING)
-        cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
         query_file_pre = os.path.join(basedir, "queries/QC2.txt")
         query_file = open(query_file_pre,"r")
         query = query_file.read()
@@ -246,7 +230,7 @@ def choose_super_categ():
     try:
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        query = 'select nome from categoria2'
+        query = 'select nome from categoria'
         cursor.execute(query)
         return render_template("catSubCatsIVM.html",cursor=cursor,params=request.args)
     except Exception as e:
