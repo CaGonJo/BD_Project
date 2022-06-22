@@ -1,0 +1,4 @@
+START TRANSACTION;
+
+INSERT INTO categoria VALUES (%s);
+INSERT INTO categoria_simples VALUES (%s);

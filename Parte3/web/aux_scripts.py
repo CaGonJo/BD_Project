@@ -15,38 +15,44 @@ def get_root_categs(dbConn):
         roots += [row[0]]
     return roots
 
-def get_query_data_new_categ(inputs,dbConn):
+def get_query_data_new_simple_categ(inputs,dbConn):
     input_keys = list(inputs)
-    query=''
-    if 'new_categ' not in input_keys:
+    if inputs['new_categ']=='':
         raise Exception("Submissao invalida! Nova Categoria nao tem nome.")
-    categ_name = inputs['new_categ']
-    if 'new_categ_is_root' in input_keys:            # Categoria Raiz
-        root_categs = get_root_categs(dbConn)
-        for root in root_categs:
-            query+="insert into tem_outra values (%s,'"+str(root)+"'); "
-        query = """
-        start transaction;
-        insert into categoria values (%s);
-        insert into super_categoria values (%s);
-        """ + query + """
-        """
-        data = (categ_name,)*(2+len(root_categs)) 
-    elif 'new_categ_has_mother' not in input_keys:           # Uma das Cat Raiz
-        query = """
-        start transaction;
-        insert into categoria values (%s);
-        insert into categoria_simples values (%s);
-        """
-        data = (categ_name,)*2
-    else:                               # Nova Cat Simples que não é Raiz
-        query = """
-        start transaction;
-        insert into categoria values (%s);
-        insert into categoria_simples values (%s);
-        insert into tem_outra values (%s,%s);
-        """
-        if 'new_categ_mother' not in input_keys:
-            raise Exception("Submissao invalida")
-        data = (categ_name,categ_name,inputs['new_categ_mother'],categ_name)
-    return query,data,0
+    if 'new_categ_has_mother' not in input_keys:
+        data = (inputs['new_categ'],)*2
+        query_file_pre = os.path.join(basedir, 'queries/addSimplestCateg.txt')
+        query_file = open(query_file_pre,"r")
+        query = query_file.read()
+        query_file.close()
+    else:
+        if inputs['new_categ_mother']=='':
+            raise Exception("Submissao invalida! Nome da Categoria Mae nao inserido")
+        data = (inputs['new_categ'],inputs['new_categ'],
+        inputs['new_categ_mother'],inputs['new_categ'],)
+        query_file_pre = os.path.join(basedir, 'queries/addSimpleCategWithMother.txt')
+        query_file = open(query_file_pre,"r")
+        query = query_file.read()
+        query_file.close()
+    return query,data
+
+def get_query_data_from_categ_sons(categ_name,sons):
+    query = "start transaction; insert into categoria values (%s); insert into super_categoria values (%s); "
+    data = (categ_name,)*2
+    for son in sons:
+        query += "insert into tem_outra values (%s,%s); "
+        data += (categ_name,son)
+    return query,data
+
+def get_query_data_new_super_categ(inputs,dbConn):
+    input_keys = list(inputs)
+    if inputs['new_categ']=='':
+        raise Exception("Submissao invalida! Nova Categoria nao tem nome.")
+    if inputs['new_categ_sons']=='':
+        raise Exception("Submissao invalida! Filhos de Super Categoria não foram indicados.")
+    query,data = get_query_data_from_categ_sons(inputs['new_categ'],inputs["new_categ_sons"].split(','))
+    if inputs['new_categ_mother']!='':
+        query += "insert into tem_outra values (%s,%s); "
+        data += (inputs['new_categ'],inputs['new_categ_mother']) 
+    return query,data
+

@@ -64,7 +64,7 @@ def insert_categ_page():
         cursor.close()
         dbConn.close()
 
-@app.route('/insert_categ', methods=["POST"])
+@app.route('/insert_simple_categ', methods=["POST"])
 def insert_categ():
     dbConn=None
     cursor=None
@@ -72,7 +72,29 @@ def insert_categ():
         success = 1
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        query,data,err = get_query_data_new_categ(request.form,dbConn)
+        query,data = get_query_data_new_simple_categ(request.form,dbConn)
+        cursor.execute(query,data)
+        return render_template("success.html")
+    except Exception as e:
+        success = 0
+        return render_template("error.html",msg_err=e)
+    finally:
+        if success:
+            cursor.execute("commit;")
+        else: 
+            cursor.execute("rollback;")
+        cursor.close()
+        dbConn.close()
+
+@app.route('/insert_super_categ', methods=["POST"])
+def insert_categ():
+    dbConn=None
+    cursor=None
+    try:
+        success = 1
+        dbConn = psycopg2.connect(DB_CONNECTION_STRING)
+        cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
+        query,data = get_query_data_new_super_categ(request.form,dbConn)
         cursor.execute(query,data)
         return render_template("success.html")
     except Exception as e:
