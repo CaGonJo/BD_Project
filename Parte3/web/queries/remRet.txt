@@ -1,0 +1,10 @@
+START TRANSACTION;
+
+DELETE FROM evento_reposicao
+WHERE tin=%s;
+
+DELETE FROM responsavel_por 
+WHERE tin=%s;
+
+DELETE FROM retalhista 
+WHERE tin=%s;
