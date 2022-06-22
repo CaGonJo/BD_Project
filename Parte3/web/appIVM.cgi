@@ -30,19 +30,22 @@ def main_page():
 
 # Exerc 1 #################################################
 
-@app.route('/remove_insert_categ')
-def remove_insert_categ_page():
-    try:
-        return render_template("removeInsertCateg.html")
-    except Exception as e:
-        return str(e) 
-
 @app.route('/get_remove_categ')
 def remove_categ_page():
+    dbConn=None
+    cursor=None
     try:
-        return render_template("getRemoveCateg.html")
+        dbConn = psycopg2.connect(DB_CONNECTION_STRING)
+        cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
+        query = 'select nome from categoria2'
+        cursor.execute(query)
+        return render_template("getRemoveCateg.html",cursor=cursor)
     except Exception as e:
         return str(e)
+    finally:
+        dbConn.commit()
+        cursor.close()
+        dbConn.close()
 
 @app.route('/get_insert_categ')
 def insert_categ_page():
@@ -80,6 +83,97 @@ def insert_categ():
         dbConn.commit()
         cursor.close()
         dbConn.close()
+
+@app.route('/remove_categ', methods=["POST"])
+def remove_categ():
+    dbConn=None
+    cursor=None
+    try:
+        dbConn = psycopg2.connect(DB_CONNECTION_STRING)
+        cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
+        data = (request.form['remove_categ_name'],)
+        query_file_pre = os.path.join(basedir, "queries/QC2.txt")
+        query_file = open(query_file_pre,"r")
+        query = query_file.read()
+        query_file.close()
+        cursor.execute(query,data)
+        return render_template("insertCategResult.html", ola=query)
+    except Exception as e:
+        return str(e)
+    finally:
+        dbConn.commit()
+        cursor.close()
+        dbConn.close()
+
+
+# Exerc 2 #################################################
+
+
+@app.route('/get_insert_ret')
+def get_insert_categ():
+    try:
+        return render_template("getInsertRet.html")
+    except Exception as e:
+        return str(e)
+
+
+@app.route('/get_remove_ret')
+def get_remove_categ():
+    dbConn=None
+    cursor=None
+    try:
+        dbConn = psycopg2.connect(DB_CONNECTION_STRING)
+        cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
+        query = 'select tin from retalhista limit 10'
+        cursor.execute(query)
+        return render_template("getRemoveRet.html",cursor=cursor)
+    except Exception as e:
+        return str(e)
+    finally:
+        dbConn.commit()
+        cursor.close()
+        dbConn.close()
+
+@app.route('/remove_ret', methods=["POST"])
+def remove_ret():
+    dbConn=None
+    cursor=None
+    try:
+        dbConn = psycopg2.connect(DB_CONNECTION_STRING)
+        cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
+        query = 'select * from evento_reposicao where num_serie=%s'
+        data=(request.form["remove_ret_tin"],)
+        cursor.execute(query,data)
+        return render_template("erroSubmition.html", cursor=cursor, params=request.form)
+    except Exception as e:
+        return str(e)
+    finally:
+        dbConn.commit()
+        cursor.close()
+        dbConn.close()
+
+
+@app.route('/insert_ret', methods=["POST"])
+def insert_ret():
+    dbConn=None
+    cursor=None
+    try:
+        dbConn = psycopg2.connect(DB_CONNECTION_STRING)
+        cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
+        query_file_pre = os.path.join(basedir, "queries/Q2Insert.txt")
+        query_file = open(query_file_pre,"r")
+        query = query_file.read()
+        query_file.close()
+        data=(request.form["insert_ret_tin"],)
+        cursor.execute(query,data)
+        return render_template("erroSubmition.html", cursor=cursor, params=request.form)
+    except Exception as e:
+        return str(e)
+    finally:
+        dbConn.commit()
+        cursor.close()
+        dbConn.close()
+
 
 
 # Exerc 3 #################################################
