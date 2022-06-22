@@ -28,10 +28,23 @@ create or replace function cat_prateleira () returns trigger as
         FROM prateleira
         WHERE prateleira.nro=new.nro and prateleira.num_serie=new.num_serie and prateleira.fabricante=new.fabricante;
 	
+        WITH RECURSIVE t1 AS (
+	    SELECT  super_cat
+	    FROM tem_outra
+	    WHERE cat=categoria
+
+	    UNION ALL
+
+	    SELECT t2.super_cat
+	    FROM t1
+	    JOIN tem_outra AS t2
+	    ON t2.cat=t1.super_cat)
+
 
         if new.ean not in   (SELECT ean
                             FROM tem_categoria
-                            WHERE tem_categoria.nome=categoria)
+                            WHERE tem_categoria.nome in (SELECT * FROM t1))
+
         
         then
             raise exception 'Um produto só pode ser reposto numa prateleira que apresente uma das categorias desse produto.';
