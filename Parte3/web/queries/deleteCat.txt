@@ -1,0 +1,49 @@
+START TRANSACTION;
+
+DELETE
+FROM tem_outra
+WHERE cat=%s OR super_cat=%s;
+
+DELETE
+FROM categoria_simples
+WHERE nome=%s;
+
+DELETE 
+FROM super_categoria
+WHERE nome=%s;
+
+DELETE 
+FROM tem_categoria
+WHERE cat=%s;
+
+DELETE 
+FROM evento_reposicao AS er
+WHERE EXISTS (
+	SELECT 1
+	FROM prateleira AS p
+	WHERE p.nro=er.nro AND p.num_serie=er.num_serie AND p.fabricante=er.fabricante AND p.nome=%s);
+
+
+DELETE 
+FROM responsavel_por
+WHERE nome_cat=%s;
+
+DELETE 
+FROM planograma AS pl
+WHERE EXISTS (
+	SELECT 1
+	FROM prateleira AS p
+	WHERE p.nro=pl.nro AND p.num_serie=pl.num_serie AND p.fabricante=pl.fabricante AND p.nome=%s);
+
+DELETE 
+FROM prateleira
+WHERE nome=%s;
+
+
+DELETE
+FROM produto
+WHERE cat=%s;
+
+DELETE
+FROM categoria
+WHERE nome=%s;
