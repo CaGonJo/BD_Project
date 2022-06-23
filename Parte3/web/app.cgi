@@ -247,7 +247,7 @@ def see_ivm_replenishment_events():
     try:
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        query_file_pre = os.path.join(basedir, "queries/QC2.txt")
+        query_file_pre = os.path.join(basedir, "queries/QC.txt")
         query_file = open(query_file_pre,"r")
         query = query_file.read()
         query_file.close()
