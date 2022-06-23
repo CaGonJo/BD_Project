@@ -241,26 +241,20 @@ def get_luckys(prats,refors,ilucky,rlucky,s_categs,nums):
         print(r.nome,r.tin)
     heights = [10,15,20]
     ivm = 0
-    prats2=[]
     for cat in s_categs:
         for ret in rlucky:
             refor = Responsavel(cat.nome,ret.tin,ilucky[ivm].num_serie,ilucky[ivm].fabricante)
-            refors = [refor]
+            refors += [refor]
             num_prats = ra.randint(3,4)
             for i in range(num_prats):
                 height  = heights[ra.randint(0,2)]
-                prats2 += [
+                prats += [
                     Prateleira((i+1),ilucky[ivm].num_serie,
                     ilucky[ivm].fabricante,height,cat.nome,refor)
                 ]
             ivm+=1
-    for prat in prats2:
-        print(prat)
     
-    return prats+prats2,refors
-
-def get_two_sets(mother_set, size_of_small_set):
-    big_set, small_set = []
+    return prats,refors
     
 
 def get_prateleiras_refors(pre_ivms,categs,pre_retailers,simple_categs,retailers_simple_all=3):
