@@ -1,0 +1,3 @@
+START TRANSACTION;
+
+insert into retalhista values (%s,%s);
