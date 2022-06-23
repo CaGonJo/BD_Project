@@ -5,8 +5,8 @@
     <title>List accounts - Flask </title>
 </head>
 <body style="padding:20px">
-    <h3>Sub Categorias da Categoria {{ params.get("categ_name") }}</h3>
-{% if cursor %}
+    <h3>Sub Categorias da Categoria {{ categ }}</h3>
+{% if subCategs %}
     <table border="2px">
         <thead>
             <tr>
@@ -14,9 +14,9 @@
             </tr>
         </thead>
         <tbody>
-        {% for record in cursor %}
+        {% for record in subCategs %}
             <tr>
-                <td>{{ record[0] }} </td>
+                <td>{{ record }} </td>
             </tr>
         {% endfor %}
         </tbody>

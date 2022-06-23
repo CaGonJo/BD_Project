@@ -234,7 +234,7 @@ def choose_ivm():
         cursor.execute(query)
         return render_template("replenishmentIVM.html", cursor=cursor, params=request.args)
     except Exception as e:
-        return str(e)
+        return render_template("error.html",msg_err=e)
     finally:
         dbConn.commit()
         cursor.close()
@@ -255,11 +255,12 @@ def see_ivm_replenishment_events():
         cursor.execute(query,data)
         return render_template("seeRepByCateg.html", cursor=cursor)
     except Exception as e:
-        return str(e)
+        return render_template("error.html",msg_err=e)
     finally:
         dbConn.commit()
         cursor.close()
         dbConn.close()
+
 
 # Exerc 4 #################################################
 
@@ -274,7 +275,7 @@ def choose_super_categ():
         cursor.execute(query)
         return render_template("catSubCatsIVM.html",cursor=cursor,params=request.args)
     except Exception as e:
-        return str(e)
+        return render_template("error.html",msg_err=e)
     finally:
         dbConn.commit()
         cursor.close()
@@ -287,15 +288,10 @@ def see_cat_sub_cats():
     try:
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        query_file_pre = os.path.join(basedir, "queries/QD.txt")
-        query_file = open(query_file_pre,"r")
-        query = query_file.read()
-        query_file.close()
-        data=(request.form["categ_name"],)
-        cursor.execute(query,data)
-        return render_template("seeCatSubCats.html", cursor=cursor, params=request.form)
+        subCategs = get_categ_sub_categs(request.form["categ_name"],cursor)
+        return render_template("seeCatSubCats.html", subCategs=subCategs, categ=(request.form["categ_name"]))
     except Exception as e:
-        return str(e)
+        return render_template("error.html",msg_err=e)
     finally:
         dbConn.commit()
         cursor.close()
