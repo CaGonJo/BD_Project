@@ -46,7 +46,7 @@ create or replace function cat_prateleira () returns trigger as
                             WHERE tem_categoria.nome=categoria)
 
         then
-            raise exception 'Um produto só pode ser reposto numa prateleira que apresente uma das categorias desse produto.';
+            raise exception 'Um produto só pode ser reposto numa prateleira que apresente a categoria do produto.';
         end if;
         return new;
     end; 
