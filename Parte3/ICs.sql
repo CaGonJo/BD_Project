@@ -1,6 +1,19 @@
 DROP TRIGGER IF EXISTS verifica_unidades_reposicao ON evento_reposicao;
 DROP TRIGGER IF EXISTS verifica_planograma ON planograma;
+DROP TRIGGER IF EXISTS verifica_categorias_diferentes ON tem_outra;
 
+create or replace function nomes_diferentes () returns trigger as
+    $$
+    begin
+        if new.cat=new.super_cat then
+            raise exception 'Uma categoria não se pode conter a si mesma';
+        end if;
+        return new;
+    end; 
+    $$ LANGUAGE plpgsql;
+
+create trigger verifica_categorias_diferentes before insert on tem_outra
+for each row execute procedure nomes_diferentes();
 
 
 create or replace function num_unidades_permitido () returns trigger as
@@ -28,11 +41,10 @@ create or replace function cat_prateleira () returns trigger as
         FROM prateleira
         WHERE prateleira.nro=new.nro and prateleira.num_serie=new.num_serie and prateleira.fabricante=new.fabricante;
 	
-
         if new.ean not in   (SELECT ean
                             FROM tem_categoria
                             WHERE tem_categoria.nome=categoria)
-        
+
         then
             raise exception 'Um produto só pode ser reposto numa prateleira que apresente uma das categorias desse produto.';
         end if;
