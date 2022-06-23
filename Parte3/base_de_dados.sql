@@ -1,21 +1,18 @@
 create table categoria (
     nome    varchar(50),
     primary key(nome)
-    --check(nome in (select nome from super_categoria) or nome in (select nome from categoria_simples))
 );
 
 create table categoria_simples (
     nome    varchar(50),
     foreign key(nome) references categoria(nome),
     primary key(nome)
-    --check(nome not in (select nome from super_categoria))
 );
 
 create table super_categoria (
     nome    varchar(50),
     foreign key(nome) references categoria(nome),
     primary key(nome)
-    --check(nome in (select super_cat from tem_outra))
 );
 
 create table tem_outra (
@@ -33,7 +30,6 @@ create table produto (
     cat     varchar(50),
     primary key(ean),
     foreign key(cat) references categoria(nome)
-    --check (ean in (select ean from tem_categoria))
 );
 
 create table tem_categoria (
