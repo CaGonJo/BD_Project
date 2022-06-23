@@ -25,7 +25,7 @@ def main_page():
     try:
         return render_template("index.html")
     except Exception as e:
-        return str(e) #Renders a page with the error.
+        return render_template("error.html",msg_err=e)
 
 
 # Exerc 1 #################################################
@@ -113,19 +113,24 @@ def remove_categ():
     dbConn=None
     cursor=None
     try:
+        success=1
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        data = (request.form['remove_categ_name'],)
-        query_file_pre = os.path.join(basedir, "queries/QC2.txt")
+        data = (request.form['remove_categ_name'],)*11
+        query_file_pre = os.path.join(basedir, "queries/deleteCat.txt")
         query_file = open(query_file_pre,"r")
         query = query_file.read()
         query_file.close()
         cursor.execute(query,data)
-        return render_template("insertCategResult.html", ola=query)
+        return render_template("success.html")
     except Exception as e:
+        success = 0
         return render_template("error.html",msg_err=e)
     finally:
-        dbConn.commit()
+        if success:
+            cursor.execute("commit;")
+        else: 
+            cursor.execute("rollback;")
         cursor.close()
         dbConn.close()
 
@@ -138,7 +143,7 @@ def get_insert_categ():
     try:
         return render_template("getInsertRet.html")
     except Exception as e:
-        return str(e)
+        return render_template("error.html",msg_err=e)
 
 
 @app.route('/get_remove_ret')
@@ -152,7 +157,7 @@ def get_remove_categ():
         cursor.execute(query)
         return render_template("getRemoveRet.html",cursor=cursor)
     except Exception as e:
-        return str(e)
+        return render_template("error.html",msg_err=e)
     finally:
         dbConn.commit()
         cursor.close()
@@ -190,19 +195,24 @@ def insert_ret():
     dbConn=None
     cursor=None
     try:
+        success = 1
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        query_file_pre = os.path.join(basedir, "queries/Q2Insert.txt")
+        query_file_pre = os.path.join(basedir, "queries/insertRet.txt")
         query_file = open(query_file_pre,"r")
         query = query_file.read()
         query_file.close()
-        data=(request.form["insert_ret_tin"],)
+        data=(request.form["insert_ret_tin"],request.form['insert_ret_name'])
         cursor.execute(query,data)
-        return render_template("erroSubmition.html", cursor=cursor, params=request.form)
+        return render_template("success.html")
     except Exception as e:
-        return str(e)
+        success = 0
+        return render_template("error.html",msg_err=e)
     finally:
-        dbConn.commit()
+        if success:
+            cursor.execute("commit;")
+        else: 
+            cursor.execute("rollback;")
         cursor.close()
         dbConn.close()
 

@@ -1,0 +1,6 @@
+SELECT SUM(er.unidades) AS unidades_repostas, p.cat AS categoria
+FROM evento_reposicao AS er
+INNER JOIN produto AS p
+ON p.ean=er.ean
+WHERE er.num_serie=%s
+GROUP BY p.cat
