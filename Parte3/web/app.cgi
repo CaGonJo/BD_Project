@@ -261,10 +261,13 @@ def see_cat_sub_cats():
     dbConn=None
     cursor=None
     try:
+        simple=0
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
         subCategs = get_categ_sub_categs(request.form["categ_name"],cursor)
-        return render_template("seeCatSubCats.html", subCategs=subCategs, categ=(request.form["categ_name"]))
+        if subCategs==[]:
+            simple = 1 if is_categ_simple(request.form["categ_name"],cursor) else 0
+        return render_template("seeCatSubCats.html", subCategs=subCategs, categ=(request.form["categ_name"]),simple=simple)
     except Exception as e:
         return render_template("error.html")
     finally:

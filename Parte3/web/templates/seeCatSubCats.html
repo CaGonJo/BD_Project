@@ -5,8 +5,8 @@
     <title>List accounts - Flask </title>
 </head>
 <body style="padding:20px">
-    <h3>Sub Categorias da Categoria {{ categ }}</h3>
 {% if subCategs %}
+    <h3>Sub Categorias da Categoria {{ categ }}</h3>
     <table border="2px">
         <thead>
             <tr>
@@ -22,7 +22,11 @@
         </tbody>
     </table>
 {% else %}
-    <p> Erro: não foi possível obter dados da base de dados! </p>
+    {% if simple==0 %}
+    <h3> Erro: não foi possível obter dados da base de dados! </h3>
+    {% else %}
+    <h3>{{ categ }} é Uma Categoria Simples. Não tem sub-categorias.</h3>
+    {% endif %}
 {% endif %}
     <p></p>
     <table border="10px" style="padding:10px">
