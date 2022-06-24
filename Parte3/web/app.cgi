@@ -77,7 +77,7 @@ def insert_simple_categ():
         return render_template("success.html")
     except Exception as e:
         success = 0
-        return render_template("error.html",msg_err=e)
+        return render_template("error.html")
     finally:
         if success:
             cursor.execute("commit;")
@@ -99,7 +99,7 @@ def insert_super_categ():
         return render_template("success.html")
     except Exception as e:
         success = 0
-        return render_template("error.html",msg_err=e)
+        return render_template("error.html")
     finally:
         if success:
             cursor.execute("commit;")
@@ -125,7 +125,7 @@ def remove_categ():
         return render_template("success.html")
     except Exception as e:
         success = 0
-        return render_template("error.html",msg_err=e)
+        return render_template("error.html")
     finally:
         if success:
             cursor.execute("commit;")
@@ -143,7 +143,7 @@ def get_insert_categ():
     try:
         return render_template("getInsertRet.html")
     except Exception as e:
-        return render_template("error.html",msg_err=e)
+        return render_template("error.html")
 
 
 @app.route('/get_remove_ret')
@@ -157,7 +157,7 @@ def get_remove_categ():
         cursor.execute(query)
         return render_template("getRemoveRet.html",cursor=cursor)
     except Exception as e:
-        return render_template("error.html",msg_err=e)
+        return render_template("error.html")
     finally:
         dbConn.commit()
         cursor.close()
@@ -180,7 +180,7 @@ def remove_ret():
         return render_template("success.html")
     except Exception as e:
         success = 0
-        return render_template("error.html",msg_err=e)
+        return render_template("error.html")
     finally:
         if success:
             cursor.execute("commit;")
@@ -207,7 +207,7 @@ def insert_ret():
         return render_template("success.html")
     except Exception as e:
         success = 0
-        return render_template("error.html",msg_err=e)
+        return render_template("error.html")
     finally:
         if success:
             cursor.execute("commit;")
@@ -234,7 +234,7 @@ def choose_ivm():
         cursor.execute(query)
         return render_template("replenishmentIVM.html", cursor=cursor, params=request.args)
     except Exception as e:
-        return render_template("error.html",msg_err=e)
+        return render_template("error.html")
     finally:
         dbConn.commit()
         cursor.close()
@@ -255,7 +255,7 @@ def see_ivm_replenishment_events():
         cursor.execute(query,data)
         return render_template("seeRepByCateg.html", cursor=cursor)
     except Exception as e:
-        return render_template("error.html",msg_err=e)
+        return render_template("error.html")
     finally:
         dbConn.commit()
         cursor.close()
@@ -275,7 +275,7 @@ def choose_super_categ():
         cursor.execute(query)
         return render_template("catSubCatsIVM.html",cursor=cursor,params=request.args)
     except Exception as e:
-        return render_template("error.html",msg_err=e)
+        return render_template("error.html")
     finally:
         dbConn.commit()
         cursor.close()
@@ -291,7 +291,7 @@ def see_cat_sub_cats():
         subCategs = get_categ_sub_categs(request.form["categ_name"],cursor)
         return render_template("seeCatSubCats.html", subCategs=subCategs, categ=(request.form["categ_name"]))
     except Exception as e:
-        return render_template("error.html",msg_err=e)
+        return render_template("error.html")
     finally:
         dbConn.commit()
         cursor.close()
