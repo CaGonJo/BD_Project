@@ -299,8 +299,6 @@ def get_prateleiras_refors(pre_ivms,categs,pre_retailers,simple_categs,retailers
         for i in range(num_prats):
             height  = heights[ra.randint(0,2)]
             categ = ivm_sub_categs[(i%num_categs)]
-            if not in_prod_categs(categ):
-                print("ERROOOOO")
             prats += [
                 Prateleira((i+1),ivm.num_serie,ivm.fabricante,height,categ,refor)
             ]
@@ -312,8 +310,11 @@ def get_replenishment_events(planograms,refors):
     num_planograms,num_refors = len(planograms), len(refors)
     dates = generate_dates()
     size = len(dates)
+    unlucky_eans = [1234567890123,1234567890133,1234567890523]
     for i in range(size):
-        planogram = planograms[(10*(1010+i))%num_planograms] #pick a planogram
+        planogram = planograms[(3*(17+i))%num_planograms] #pick a planogram
+        if (planogram.ean in unlucky_eans):
+            continue
         chosen_tin = planogram.responsavel.tin
         unitss = ra.randint(5,planogram.unidades)
         repevs += [
@@ -351,6 +352,9 @@ def get_planograms(prods,ivms,ptls,categs):
             ]
     return planograms
 
+def all_have_same_resp(prats):
+    resp_first = prats[0].responsavel
+    return all(list(map(lambda x:x.responsavel==resp_first,prats)))
 
 def get_instalada_em(ivms,prets):
     installs = []
@@ -516,7 +520,7 @@ PyRepEvs = get_replenishment_events(PyPlanograms,PyReFors)
 print("Done Pys")
 
 
-file1 = open('populate2.sql', 'w')
+file1 = open('populate.sql', 'w')
 
 #categoria
 categ_str = insert_str_Base(PyCategs)

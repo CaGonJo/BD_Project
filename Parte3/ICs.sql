@@ -43,7 +43,7 @@ create or replace function cat_prateleira () returns trigger as
 	
         if new.ean not in   (SELECT ean
                             FROM tem_categoria
-                            WHERE tem_categoria.nome=categoria)
+                            WHERE tem_categoria.cat=categoria)
 
         then
             raise exception 'Um produto só pode ser reposto numa prateleira que apresente a categoria do produto.';
