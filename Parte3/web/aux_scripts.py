@@ -52,11 +52,13 @@ def get_query_data_new_super_categ(inputs,dbConn):
 def get_categ_sub_categs(categ,cursor):
     sub_cats = []
     check_cats = [categ]
+    cursor.execute("start transaction;")
     while len(check_cats)!=0:
-        query = "select cat from tem_outra where super_cat=%s "
+        query = "select cat from tem_outra where super_cat=%s"
         range_size = len(check_cats)-1 #-1, pq ja adicionamos a primeira na linha de cima
         for i in range(range_size):
             query += " or super_cat=%s"
+        query += '; '
         cursor.execute(query,tuple(check_cats))
         check_cats=[]
         for sub in cursor.fetchall(): 
