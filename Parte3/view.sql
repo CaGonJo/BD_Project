@@ -9,7 +9,7 @@ CREATE view vendas(ean,cat,ano,trimestre,mes,dia_mes,
             EXTRACT(DOW FROM e.instante),
             p.distrito,p.concelho,e.unidades
     FROM ponto_de_retalho AS p
-    INNER JOIN instalada_em AS i AS i.nome=p.nome
+    INNER JOIN instalada_em AS i ON i.nome=p.nome
     INNER JOIN evento_reposicao AS e ON (e.num_serie=i.num_serie AND 
                                         e.fabricante LIKE i.fabricante)
     INNER JOIN tem_categoria AS t ON (t.ean=e.ean)

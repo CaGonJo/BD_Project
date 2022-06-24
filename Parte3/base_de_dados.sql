@@ -1,3 +1,20 @@
+DROP VIEW IF EXISTS vendas;
+DROP TABLE IF EXISTS evento_reposicao;
+DROP TABLE IF EXISTS responsavel_por;
+DROP TABLE IF EXISTS planograma;
+DROP TABLE IF EXISTS prateleira;
+DROP TABLE IF EXISTS tem_categoria;
+DROP TABLE IF EXISTS retalhista;
+DROP TABLE IF EXISTS produto;
+DROP TABLE IF EXISTS instalada_em;
+DROP TABLE IF EXISTS ivm;   
+DROP TABLE IF EXISTS ponto_de_retalho;
+DROP TABLE IF EXISTS tem_outra;
+DROP TABLE IF EXISTS super_categoria;
+DROP TABLE IF EXISTS categoria_simples;
+DROP TABLE IF EXISTS categoria;
+
+
 create table categoria (
     nome    varchar(50),
     primary key(nome)
@@ -39,7 +56,7 @@ create table tem_categoria (
     foreign key(cat) references categoria 
 );
 
-create table IVM (
+create table ivm (
     num_serie   integer,
     fabricante  varchar(50),
     primary key (num_serie, fabricante)
@@ -79,7 +96,7 @@ create table planograma (
     fabricante  varchar(50),
     faces   integer CHECK (faces > 0),
     unidades    integer NOT NULL CHECK (unidades > 0),
-    loc     integer NOT NULL CHECK (loc >= 0),
+    loc     varchar(50) NOT NULL,
     foreign key(ean) references produto,
     foreign key(nro, num_serie, fabricante) references prateleira,
     primary key(ean, nro, num_serie, fabricante)

@@ -299,8 +299,6 @@ def get_prateleiras_refors(pre_ivms,categs,pre_retailers,simple_categs,retailers
         for i in range(num_prats):
             height  = heights[ra.randint(0,2)]
             categ = ivm_sub_categs[(i%num_categs)]
-            if not in_prod_categs(categ):
-                print("ERROOOOO")
             prats += [
                 Prateleira((i+1),ivm.num_serie,ivm.fabricante,height,categ,refor)
             ]
@@ -516,7 +514,7 @@ PyRepEvs = get_replenishment_events(PyPlanograms,PyReFors)
 print("Done Pys")
 
 
-file1 = open('populate2.sql', 'w')
+file1 = open('populate.sql', 'w')
 
 #categoria
 categ_str = insert_str_Base(PyCategs)
