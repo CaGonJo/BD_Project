@@ -310,8 +310,11 @@ def get_replenishment_events(planograms,refors):
     num_planograms,num_refors = len(planograms), len(refors)
     dates = generate_dates()
     size = len(dates)
+    unlucky_eans = [1234567890123,1234567890133,1234567890523]
     for i in range(size):
-        planogram = planograms[(10*(1010+i))%num_planograms] #pick a planogram
+        planogram = planograms[(3*(17+i))%num_planograms] #pick a planogram
+        if (planogram.ean in unlucky_eans):
+            continue
         chosen_tin = planogram.responsavel.tin
         unitss = ra.randint(5,planogram.unidades)
         repevs += [
@@ -349,6 +352,9 @@ def get_planograms(prods,ivms,ptls,categs):
             ]
     return planograms
 
+def all_have_same_resp(prats):
+    resp_first = prats[0].responsavel
+    return all(list(map(lambda x:x.responsavel==resp_first,prats)))
 
 def get_instalada_em(ivms,prets):
     installs = []
