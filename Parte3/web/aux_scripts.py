@@ -44,8 +44,11 @@ def get_query_data_new_super_categ(inputs,dbConn):
     if inputs['new_categ_sons']=='':
         raise Exception("Submissao invalida! Filhos de Super Categoria não foram indicados.")
     query,data = get_query_data_from_categ_sons(inputs['new_categ'],inputs["new_categ_sons"].split(','))
-    if inputs['new_categ_mother']!='' and not_super_categ(inputs['new_categ_mother'],dbConn):
-        raise Exception("Submissao invalida! Categoria Mae ({}) nao pode ser Categoria Simples".format(inputs['new_categ_mother']))
+    if inputs['new_categ_mother']!='':
+        if not_super_categ(inputs['new_categ_mother'],dbConn):
+            raise Exception("Submissao invalida! Categoria Mae ({}) nao pode ser Categoria Simples".format(inputs['new_categ_mother']))
+        query += "insert into tem_outra values (%s,%s); "
+        data += (inputs['new_categ_mother'],inputs['new_categ'])
     return query,data
 
 
@@ -65,3 +68,13 @@ def get_categ_sub_categs(categ,cursor):
             sub_cats+=[sub[0]]
             check_cats += [sub[0]]
     return sub_cats
+
+def is_categ_simple(categ,cursor):
+    cursor.execute("select * from categoria where nome=%s;",(categ,))
+    if cursor.fetchall() == []:
+        return False
+    cursor.execute("select * from tem_outra where super_cat=%s;",(categ,))
+    sub_cats = []
+    for sub in cursor.fetchall(): 
+        sub_cats+=[sub[0]]
+    return sub_cats==[]
