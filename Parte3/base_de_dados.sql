@@ -107,7 +107,7 @@ create table evento_reposicao(
     nro     integer,
     num_serie   integer,
     fabricante  varchar(50),
-    instante    timestamp NOT NULL, --CHECK (instante >= 0),
+    instante    timestamp NOT NULL,
     unidades    integer NOT NULL CHECK (unidades > 0),
     tin     integer,
     foreign key(ean, nro, num_serie, fabricante) references planograma,
