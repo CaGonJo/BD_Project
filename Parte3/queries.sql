@@ -4,7 +4,8 @@ FROM (retalhista AS r INNER JOIN responsavel_por AS rp ON r.tin = rp.tin) AS t2
 GROUP BY t2.nome
 HAVING COUNT(DISTINCT t2.nome_cat) = (SELECT MAX(contagem)
                                       FROM (SELECT COUNT(DISTINCT nome_cat) AS contagem
-                                            FROM responsavel_por) as t1);
+                                            FROM responsavel_por
+                                            GROUP BY tin) as t1);
 
 --Qual o nome do ou dos retalhistas que são responsáveis por todas as categorias simples?
 SELECT t1.nome
@@ -19,7 +20,7 @@ HAVING COUNT(DISTINCT t1.nome_cat) = (SELECT COUNT(nome) FROM categoria_simples)
 
 SELECT ean
 FROM produto
-WHERE ean NOT IN (SELECT ean FROM evento_de_reposicao);
+WHERE ean NOT IN (SELECT ean FROM evento_reposicao);
 
 -- Quais os produtos (ean) que foram repostos sempre pelo mesmo retalhista?
 SELECT ean
