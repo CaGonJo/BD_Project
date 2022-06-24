@@ -1,16 +1,10 @@
-WITH t1 AS (
-        SELECT i.num_serie,er.unidades
+SELECT num_serie, units
+FROM (
+        SELECT SUM(er.unidades) AS units,i.num_serie
         FROM ivm as i
         INNER JOIN evento_reposicao AS er
         ON i.num_serie=er.num_serie
-), t2 AS (
-        SELECT COUNT(unidades) AS units,num_serie
-        FROM t1
-        GROUP BY num_serie
-)
-
-
-SELECT num_serie
-FROM t2
-ORDER BY units DESC
+        GROUP BY i.num_serie
+) AS t
+ORDER BY t.units DESC
 LIMIT 10
