@@ -71,6 +71,12 @@ class Categoria:
     def __str__(self):
         return "(\'{}\')".format(self.nome)
 
+    def __eq__(self,other):
+        return self.nome==other.nome
+
+    def __lt__(self,other):
+        return self.nome < other.nome
+
     def sqlStr(self):
         return "insert into {} values ".format(self.tipo)+str(self)+";\n"
 
@@ -232,6 +238,14 @@ def get_categorias_simples(super_categs,categs_str):
         ]
     return simple_cats
 
+def get_super_categorias(super_categs):
+    super_cats=[]
+    for cat in super_categs:
+        super_cats+= [
+            Categoria(cat,'super_categoria')
+        ]
+    return super_cats
+
 
 def get_luckys(prats,refors,ilucky,rlucky,s_categs,nums):
     """
@@ -256,6 +270,8 @@ def get_luckys(prats,refors,ilucky,rlucky,s_categs,nums):
     
     return prats,refors
     
+def in_prod_categs(b):
+    return b in PyProdCategsStrings
 
 def get_prateleiras_refors(pre_ivms,categs,pre_retailers,simple_categs,retailers_simple_all=3):
     heights = [10,15,20]
@@ -270,7 +286,7 @@ def get_prateleiras_refors(pre_ivms,categs,pre_retailers,simple_categs,retailers
     for ivm in ivms:
         num_prats = ra.randint(3,5)
         ivm_categ = categs[ra.randint(0,(len(categs)-1))]
-        ivm_sub_categs = get_categ_sub_categs(ivm_categ.nome)
+        ivm_sub_categs = list(filter(in_prod_categs,get_categ_sub_categs(ivm_categ.nome)))
         num_categs = len(ivm_sub_categs)
         #Responsible For
         retailer = retailers[ra.randint(0,(retailers_num-1))]
@@ -363,13 +379,14 @@ def generate_dates():
     return dates
 
 
-def generate_produtos(simple_categs):
+def generate_produtos(simple_categs,super_categs):
     produtos = []
     start_ean = 1234567890123
     categ_numb = len(simple_categs)
     prods_per_categ = round((OG*2)/categ_numb)
     numbers_needed = len(str(prods_per_categ))
-    for categ in simple_categs:
+    prod_categs = simple_categs+list(np.random.choice(super_categs,size=round(len(super_categs)*0.2),replace=False))
+    for categ in prod_categs:
         abrev_name = get_product_abrev(categ.nome)
         i=0
         for i in range(prods_per_categ):
@@ -377,7 +394,7 @@ def generate_produtos(simple_categs):
                 Produto(start_ean,abrev_name+'_'+str(i).zfill(numbers_needed),categ.nome)
             ]
             start_ean+=1
-    return produtos
+    return produtos,prod_categs
 
 
 def generate_ivms():
@@ -475,10 +492,11 @@ Super_Categs = {'Doces':['Bolos','Bolachas','Frutas'],
 
 PyCategs, Categs_Str = get_categorias(Super_Categs)
 PySimpCategs = get_categorias_simples(Super_Categs,Categs_Str)
+PySuperCategs = get_super_categorias(Super_Categs)
+PyProdutos,PyProdCategs = generate_produtos(PySimpCategs,PySuperCategs)
+PyProdCategsStrings = [el.nome for el in PyProdCategs]
 
 
-
-PyProdutos = generate_produtos(PySimpCategs)
 PyIVMs = generate_ivms()
 print("Done quarter Pys")
 PyPtRet = generate_ponto_de_retalho()
@@ -505,7 +523,7 @@ file1.writelines(categ_simples_str)
 file1.write("\n\n")
 
 #super categoria
-categ_super_str = insert_str_super_categ(Super_Categs)
+categ_super_str = insert_str_Base(PySuperCategs)
 file1.writelines(categ_super_str)
 file1.write("\n\n")
 
