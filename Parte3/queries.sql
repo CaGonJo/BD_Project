@@ -19,7 +19,7 @@ HAVING COUNT(DISTINCT t1.nome_cat) = (SELECT COUNT(nome) FROM categoria_simples)
 
 SELECT ean
 FROM produto
-WHERE ean NOT IN (SELECT ean FROM evento_de_reposicao);
+WHERE ean NOT IN (SELECT ean FROM evento_reposicao);
 
 -- Quais os produtos (ean) que foram repostos sempre pelo mesmo retalhista?
 SELECT ean
