@@ -69,20 +69,15 @@ def insert_simple_categ():
     dbConn=None
     cursor=None
     try:
-        success = 1
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
         query,data = get_query_data_new_simple_categ(request.form,dbConn)
         cursor.execute(query,data)
         return render_template("success.html")
     except Exception as e:
-        success = 0
         return render_template("error.html")
     finally:
-        if success:
-            cursor.execute("commit;")
-        else: 
-            cursor.execute("rollback;")
+        dbConn.commit()
         cursor.close()
         dbConn.close()
 
@@ -91,20 +86,15 @@ def insert_super_categ():
     dbConn=None
     cursor=None
     try:
-        success = 1
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
         query,data = get_query_data_new_super_categ(request.form,dbConn)
         cursor.execute(query,data)
         return render_template("success.html")
     except Exception as e:
-        success = 0
         return render_template("error.html")
     finally:
-        if success:
-            cursor.execute("commit;")
-        else: 
-            cursor.execute("rollback;")
+        dbConn.commit()
         cursor.close()
         dbConn.close()
 
@@ -113,7 +103,6 @@ def remove_categ():
     dbConn=None
     cursor=None
     try:
-        success=1
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
         data = (request.form['remove_categ_name'],)*11
@@ -124,13 +113,9 @@ def remove_categ():
         cursor.execute(query,data)
         return render_template("success.html")
     except Exception as e:
-        success = 0
         return render_template("error.html")
     finally:
-        if success:
-            cursor.execute("commit;")
-        else: 
-            cursor.execute("rollback;")
+        dbConn.commit()
         cursor.close()
         dbConn.close()
 
@@ -168,7 +153,6 @@ def remove_ret():
     dbConn=None
     cursor=None
     try:
-        success=1
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
         query_file_pre = os.path.join(basedir, "queries/remRet.txt")
@@ -179,13 +163,9 @@ def remove_ret():
         cursor.execute(query,data)
         return render_template("success.html")
     except Exception as e:
-        success = 0
         return render_template("error.html")
     finally:
-        if success:
-            cursor.execute("commit;")
-        else: 
-            cursor.execute("rollback;")
+        dbConn.commit()
         cursor.close()
         dbConn.close()
 
@@ -195,7 +175,6 @@ def insert_ret():
     dbConn=None
     cursor=None
     try:
-        success = 1
         dbConn = psycopg2.connect(DB_CONNECTION_STRING)
         cursor = dbConn.cursor(cursor_factory = psycopg2.extras.DictCursor)
         query_file_pre = os.path.join(basedir, "queries/insertRet.txt")
@@ -206,13 +185,9 @@ def insert_ret():
         cursor.execute(query,data)
         return render_template("success.html")
     except Exception as e:
-        success = 0
         return render_template("error.html")
     finally:
-        if success:
-            cursor.execute("commit;")
-        else: 
-            cursor.execute("rollback;")
+        dbConn.commit()
         cursor.close()
         dbConn.close()
 

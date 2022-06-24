@@ -247,7 +247,7 @@ def get_super_categorias(super_categs):
     return super_cats
 
 
-def get_luckys(prats,refors,ilucky,rlucky,s_categs,nums):
+def get_luckys(prats,refors,ilucky,rlucky,s_categs):
     """
     Serve para ter a certeza que temos retalhistas responsaveis por todas as cat simples
     """
@@ -285,9 +285,11 @@ def get_prateleiras_refors(pre_ivms,categs,pre_retailers,simple_categs,retailers
     print(len(retailers),len(pre_retailers),len(retailers_lucky))
     for ivm in ivms:
         num_prats = ra.randint(3,5)
-        ivm_categ = categs[ra.randint(0,(len(categs)-1))]
-        ivm_sub_categs = list(filter(in_prod_categs,get_categ_sub_categs(ivm_categ.nome)))
-        num_categs = len(ivm_sub_categs)
+        num_categs=0
+        while num_categs==0:
+            ivm_categ = categs[ra.randint(0,(len(categs)-1))]
+            ivm_sub_categs = list(filter(in_prod_categs,get_categ_sub_categs(ivm_categ.nome)))
+            num_categs = len(ivm_sub_categs)
         #Responsible For
         retailer = retailers[ra.randint(0,(retailers_num-1))]
         refor = Responsavel(ivm_categ.nome,retailer.tin,ivm.num_serie,
@@ -296,11 +298,13 @@ def get_prateleiras_refors(pre_ivms,categs,pre_retailers,simple_categs,retailers
         #Prateleiras
         for i in range(num_prats):
             height  = heights[ra.randint(0,2)]
-            categ = ivm_categ.nome if num_categs==0 else ivm_sub_categs[(i%num_categs)]
+            categ = ivm_sub_categs[(i%num_categs)]
+            if not in_prod_categs(categ):
+                print("ERROOOOO")
             prats += [
                 Prateleira((i+1),ivm.num_serie,ivm.fabricante,height,categ,refor)
             ]
-    return get_luckys(prats,refors,ivms_lucky,retailers_lucky,simple_categs,retailers_simple_all)
+    return get_luckys(prats,refors,ivms_lucky,retailers_lucky,simple_categs)
 
 
 def get_replenishment_events(planograms,refors):
@@ -330,14 +334,16 @@ def get_planograms(prods,ivms,ptls,categs):
         product = prods[i]
         good_prats = []
         p=(i*373)
-        while len(good_prats)<15:
+        while len(good_prats)<15 and (p-(i*373)<num_prats):
             prateleira = ptls[p%num_prats]
-            if product_categ_is_good(prateleira.nome,product.cat):
+            if prateleira.nome == product.cat:
                 good_prats += [prateleira]
             p+=1
         usable_prats = np.random.choice(good_prats, size=round(len(good_prats)*0.6), replace=False)
         for u_plat in usable_prats:
             random1, random2 = ra.randint(0,3),ra.randint(0,3)
+            if product.cat != u_plat.nome:
+                print("ERRO")
             planograms += [
                 Planograma(product.ean, u_plat.nro,
                 u_plat.num_serie,u_plat.fabricante,faces,
